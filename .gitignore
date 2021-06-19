@@ -1,0 +1,4 @@
+node_modules
+INSTALL.md
+.DS_Store
+.env

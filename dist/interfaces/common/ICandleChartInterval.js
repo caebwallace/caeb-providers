@@ -1,0 +1,35 @@
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
+exports.ICandleChartIntervalInSeconds = exports.ICandleChartIntervalKeys = void 0;
+var ICandleChartIntervalKeys;
+(function (ICandleChartIntervalKeys) {
+    ICandleChartIntervalKeys['ONE_MINUTE'] = 'ONE_MINUTE';
+    ICandleChartIntervalKeys['THREE_MINUTES'] = 'THREE_MINUTES';
+    ICandleChartIntervalKeys['FIVE_MINUTES'] = 'FIVE_MINUTES';
+    ICandleChartIntervalKeys['FIFTEEN_MINUTES'] = 'FIFTEEN_MINUTES';
+    ICandleChartIntervalKeys['THIRTY_MINUTES'] = 'THIRTY_MINUTES';
+    ICandleChartIntervalKeys['ONE_HOUR'] = 'ONE_HOUR';
+    ICandleChartIntervalKeys['TWO_HOURS'] = 'TWO_HOURS';
+    ICandleChartIntervalKeys['FOUR_HOURS'] = 'FOUR_HOURS';
+    ICandleChartIntervalKeys['SIX_HOURS'] = 'SIX_HOURS';
+    ICandleChartIntervalKeys['EIGHT_HOURS'] = 'EIGHT_HOURS';
+    ICandleChartIntervalKeys['TWELVE_HOURS'] = 'TWELVE_HOURS';
+    ICandleChartIntervalKeys['ONE_DAY'] = 'ONE_DAY';
+    ICandleChartIntervalKeys['ONE_WEEK'] = 'ONE_WEEK';
+})((ICandleChartIntervalKeys = exports.ICandleChartIntervalKeys || (exports.ICandleChartIntervalKeys = {})));
+var ICandleChartIntervalInSeconds;
+(function (ICandleChartIntervalInSeconds) {
+    ICandleChartIntervalInSeconds[(ICandleChartIntervalInSeconds['ONE_MINUTE'] = 60)] = 'ONE_MINUTE';
+    ICandleChartIntervalInSeconds[(ICandleChartIntervalInSeconds['THREE_MINUTES'] = 180)] = 'THREE_MINUTES';
+    ICandleChartIntervalInSeconds[(ICandleChartIntervalInSeconds['FIVE_MINUTES'] = 300)] = 'FIVE_MINUTES';
+    ICandleChartIntervalInSeconds[(ICandleChartIntervalInSeconds['FIFTEEN_MINUTES'] = 900)] = 'FIFTEEN_MINUTES';
+    ICandleChartIntervalInSeconds[(ICandleChartIntervalInSeconds['THIRTY_MINUTES'] = 1800)] = 'THIRTY_MINUTES';
+    ICandleChartIntervalInSeconds[(ICandleChartIntervalInSeconds['ONE_HOUR'] = 3600)] = 'ONE_HOUR';
+    ICandleChartIntervalInSeconds[(ICandleChartIntervalInSeconds['TWO_HOURS'] = 7200)] = 'TWO_HOURS';
+    ICandleChartIntervalInSeconds[(ICandleChartIntervalInSeconds['FOUR_HOURS'] = 14400)] = 'FOUR_HOURS';
+    ICandleChartIntervalInSeconds[(ICandleChartIntervalInSeconds['SIX_HOURS'] = 21600)] = 'SIX_HOURS';
+    ICandleChartIntervalInSeconds[(ICandleChartIntervalInSeconds['EIGHT_HOURS'] = 28800)] = 'EIGHT_HOURS';
+    ICandleChartIntervalInSeconds[(ICandleChartIntervalInSeconds['TWELVE_HOURS'] = 43200)] = 'TWELVE_HOURS';
+    ICandleChartIntervalInSeconds[(ICandleChartIntervalInSeconds['ONE_DAY'] = 86400)] = 'ONE_DAY';
+    ICandleChartIntervalInSeconds[(ICandleChartIntervalInSeconds['ONE_WEEK'] = 604800)] = 'ONE_WEEK';
+})((ICandleChartIntervalInSeconds = exports.ICandleChartIntervalInSeconds || (exports.ICandleChartIntervalInSeconds = {})));

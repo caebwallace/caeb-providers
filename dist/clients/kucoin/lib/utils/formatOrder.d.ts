@@ -1,0 +1,37 @@
+import { IAsset } from '../../../../interfaces';
+import { IOrder } from '../../../../interfaces/common/IOrder';
+export interface KucoinOrder {
+    id: string;
+    symbol: string;
+    opType: string;
+    type: 'limit' | 'market';
+    side: 'buy' | 'sell';
+    price: string;
+    size: string;
+    funds: string;
+    dealFunds: string;
+    dealSize: string;
+    fee: string;
+    feeCurrency: string;
+    stp: string;
+    stop: string;
+    stopTriggered: false;
+    stopPrice: string;
+    timeInForce: string;
+    postOnly: boolean;
+    hidden: boolean;
+    iceberg: boolean;
+    visibleSize: string;
+    cancelAfter: number;
+    channel: string;
+    clientOid: null;
+    remark: null;
+    tags: null;
+    isActive: boolean;
+    cancelExist: boolean;
+    createdAt: number;
+    tradeType: 'TRADE' | 'MARGIN_TRADE';
+    baseAsset: string;
+    quoteAsset: string;
+}
+export declare const formatOrder: (order: KucoinOrder, tickerInfo: IAsset) => IOrder;
