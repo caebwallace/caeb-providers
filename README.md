@@ -2,7 +2,7 @@
 
 ![NPM Version](https://badge.fury.io/js/caeb-providers.svg)
 
-`@caeb/providers` is a nodejs (TypeScript) library to provide universal interface to read balances and manage orders for supported providers.
+`caeb-providers` is a nodejs (TypeScript) library to provide universal interface to read balances and manage orders for supported providers.
 
 **This version is a proof of work for all my private tools in development.**
 
@@ -13,11 +13,11 @@ Anyway, that lib is the foundation stone of a lot of my projects (portfolio, dif
 ## Install
 
 ```shell
-yarn add @caeb/providers
+yarn add caeb-providers
 
 # - or -
 
-npm i @caeb/providers
+npm i caeb-providers
 ```
 
 ## Providers supported
