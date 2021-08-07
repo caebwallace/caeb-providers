@@ -1,4 +1,4 @@
-import { ICandle } from '../../../../interfaces/';
+import { ICandle } from '../../../common/interfaces';
 export interface KucoinKline {
     [key: number]: string;
 }

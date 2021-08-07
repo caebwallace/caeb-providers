@@ -78,6 +78,7 @@ class ProviderCommon extends events_1.default {
                         `[API LIMIT] ${limit.type} Take a break (${limit.waitTimeMS}ms) to avoid IP ban : ${spotLimit} / ${this.weightLimitPerMinute}`,
                     );
                     yield timeout_1.timeout(limit.waitTimeMS);
+                    continue;
                 }
             }
         });

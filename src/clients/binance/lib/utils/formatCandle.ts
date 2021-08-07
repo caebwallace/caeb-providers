@@ -1,5 +1,5 @@
 import { CandleChartResult } from 'binance-api-node';
-import { ICandle } from '../../../../interfaces/';
+import { ICandle } from '../../../common/interfaces';
 
 /**
  * Format bastract candle.

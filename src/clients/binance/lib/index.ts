@@ -1,12 +1,11 @@
 import ClientBinance, { Binance, CancelOrderResult, CandleChartInterval, OrderSide, OrderType, ReconnectingWebSocketHandler } from 'binance-api-node';
-import { IProvider, IAsset, IBalance, IOrder, ICandle, ICandleChartIntervalKeys } from '../../../interfaces';
 import { IProviderBinance } from '../interfaces/IProviderBinance';
 import { formatBalances, formatCanceledOrder, formatCandle, formatNewOrder, formatQueryOrder, formatTickerInfo, formatWsOrder } from './utils';
-import { timeout } from '../../../utils/timeout/timeout';
 import { ErrorInvalidSymbol } from '../../../utils/errors';
 import { roundToCeil } from '../../../utils/numbers/numbers';
 import { createLogger, Logger } from '../../../utils/logger/logger';
-import { ProviderCommon } from '../../common/lib/index';
+import { IAsset, IBalance, ICandle, ICandleChartIntervalKeys, IOrder, IProvider } from '../../common/interfaces';
+import { ProviderCommon } from '../../common/lib';
 
 // Provider for Binance
 export class ProviderBinance extends ProviderCommon implements IProvider {
@@ -98,6 +97,11 @@ export class ProviderBinance extends ProviderCommon implements IProvider {
      */
     public log: Logger;
 
+    // Cache symbols
+    private cacheSymbols: IAsset[];
+    private cacheSymbolsLast: number;
+    private cacheSymbolsTTL: number = 60 * 60 * 1000;
+
     /**
      * Init the Provider with config.
      *
@@ -130,6 +134,8 @@ export class ProviderBinance extends ProviderCommon implements IProvider {
             httpBase: this.httpBase,
         });
     }
+    apiPassPhrase?: string;
+    subAccountId?: string | number;
 
     //////////////////////////////////////////////// PUBLIC METHODS ///////////
 
@@ -141,8 +147,13 @@ export class ProviderBinance extends ProviderCommon implements IProvider {
      * @memberof ProviderBinance
      */
     public async getExchangeInfo(): Promise<IAsset[]> {
+        if (this.cacheSymbols && this.cacheSymbols.length && Date.now() - this.cacheSymbolsLast < this.cacheSymbolsTTL) {
+            return this.cacheSymbols;
+        }
         const { symbols, rateLimits } = await this.client.exchangeInfo();
-        return symbols.map(symbol => formatTickerInfo(symbol));
+        this.cacheSymbols = symbols.map(symbol => formatTickerInfo(symbol));
+        this.cacheSymbolsLast = Date.now();
+        return this.cacheSymbols;
     }
 
     /**
@@ -237,6 +248,18 @@ export class ProviderBinance extends ProviderCommon implements IProvider {
     }
 
     /**
+     * Grouping order request for an array of pairs.
+     *
+     * @param {{ baseAsset: string; quoteAsset: string }[]} pairs - Pairs of asssets to filter.
+     * @param {'done' | 'active'} status - The orders status.
+     * @param {number} daysRange - The number of days to request (default: 365).
+     * @returns {IOrder[]} - The list of orders.
+     */
+    public async getAllOrdersForPairs(pairs: { baseAsset: string; quoteAsset: string }[], status?: string, daysRange?: number): Promise<IOrder[]> {
+        throw new Error('Method not implemented.');
+    }
+
+    /**
      * Get all orders (filled or active).
      *
      * @param {string} baseAsset - The base asset.
@@ -289,7 +312,7 @@ export class ProviderBinance extends ProviderCommon implements IProvider {
             await this.client.order({
                 symbol,
                 side,
-                type: OrderType.LIMIT,
+                type: 'LIMIT' as OrderType.MARKET,
                 quantity: quantity.toString(),
                 price: price.toString(),
             }),
@@ -308,7 +331,7 @@ export class ProviderBinance extends ProviderCommon implements IProvider {
      * @returns {Promise<IOrder[]>} - The closed orders.
      * @memberof ProviderBinance
      */
-    public async cancelOpenOrders(baseAsset: string, quoteAsset: string): Promise<IOrder[]> {
+    public async cancelOpenOrders(baseAsset: string, quoteAsset: string): Promise<IOrder[] | boolean> {
         await this.respectApiRatioLimits();
         const symbol = this.formatSymbol(baseAsset, quoteAsset);
         this.log.debug('Cancel all Open Orders...');

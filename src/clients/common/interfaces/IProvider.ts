@@ -2,8 +2,7 @@ import { EventEmitter } from 'events';
 import { IAsset } from './IAsset';
 import { IBalance } from './IBalance';
 import { ICandle } from './ICandle';
-import { IOrder } from './IOrder';
-import { OrderSide } from './OrderSide';
+import { IOrder, TOrderSide } from './IOrder';
 import { ICandleChartIntervalKeys } from './ICandleChartInterval';
 
 export interface IProvider extends EventEmitter {
@@ -24,8 +23,8 @@ export interface IProvider extends EventEmitter {
     getAssetBalance(asset: string): Promise<IBalance>;
     getAllOrders(baseAsset: string, quoteAsset: string, daysRange?: number): Promise<IOrder[]>;
     getActiveOrders(baseAsset: string, quoteAsset: string, daysRange?: number): Promise<IOrder[]>;
-    createOrderLimit(side: OrderSide, quantity: number, price: number, baseAsset: string, quoteAsset: string): Promise<IOrder>;
-    cancelOpenOrders(baseAsset: string, quoteAsset: string): Promise<IOrder[]>;
+    createOrderLimit(side: TOrderSide, quantity: number, price: number, baseAsset: string, quoteAsset: string): Promise<IOrder>;
+    cancelOpenOrders(baseAsset: string, quoteAsset: string): Promise<IOrder[] | boolean>;
     getApiRatioLimits(): Promise<any>;
     listenUserEvents(): void;
 }

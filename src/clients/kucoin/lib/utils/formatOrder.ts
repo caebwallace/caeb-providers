@@ -1,5 +1,4 @@
-import { IAsset } from '../../../../interfaces';
-import { OrderSide, IOrder, OrderStatus, OrderType } from '../../../../interfaces/common/IOrder';
+import { IAsset, IOrder, OrderSide, OrderStatus, OrderType } from '../../../common/interfaces';
 import { nz, roundToFloor } from '../../../../utils/numbers/numbers';
 
 // {

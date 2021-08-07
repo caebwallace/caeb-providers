@@ -1,4 +1,4 @@
-import { IAsset } from '../../../../interfaces/';
+import { IAsset } from '../../../common/interfaces';
 import { nz } from '../../../../utils/numbers/numbers';
 
 /**

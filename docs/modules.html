@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>caeb-providers - v0.1.0</title>
-	<meta name="description" content="Documentation for caeb-providers - v0.1.0">
+	<title>@caeb/providers - v0.2.0</title>
+	<meta name="description" content="Documentation for @caeb/providers - v0.2.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 	<script async src="assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">caeb-providers - v0.1.0</a>
+					<a href="index.html" class="title">@caeb/providers - v0.2.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -50,7 +50,7 @@
 	</div>
 	<div class="tsd-page-title">
 		<div class="container">
-			<h1>caeb-providers - v0.1.0</h1>
+			<h1>@caeb/providers - v0.2.0</h1>
 		</div>
 	</div>
 </header>
@@ -66,7 +66,9 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-enum"><a href="enums/icandlechartintervalinseconds.html" class="tsd-kind-icon">ICandle<wbr>Chart<wbr>Interval<wbr>InSeconds</a></li>
 								<li class="tsd-kind-enum"><a href="enums/icandlechartintervalkeys.html" class="tsd-kind-icon">ICandle<wbr>Chart<wbr>Interval<wbr>Keys</a></li>
+								<li class="tsd-kind-enum"><a href="enums/orderside.html" class="tsd-kind-icon">Order<wbr>Side</a></li>
 								<li class="tsd-kind-enum"><a href="enums/orderstatus.html" class="tsd-kind-icon">Order<wbr>Status</a></li>
+								<li class="tsd-kind-enum"><a href="enums/ordertype.html" class="tsd-kind-icon">Order<wbr>Type</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -78,6 +80,7 @@
 								<li class="tsd-kind-class"><a href="classes/errorinvalidsymbol.html" class="tsd-kind-icon">Error<wbr>Invalid<wbr>Symbol</a></li>
 								<li class="tsd-kind-class"><a href="classes/errorprovider.html" class="tsd-kind-icon">Error<wbr>Provider</a></li>
 								<li class="tsd-kind-class"><a href="classes/providerbinance.html" class="tsd-kind-icon">Provider<wbr>Binance</a></li>
+								<li class="tsd-kind-class"><a href="classes/providerftx.html" class="tsd-kind-icon">Provider<wbr>Ftx</a></li>
 								<li class="tsd-kind-class"><a href="classes/providerkucoin.html" class="tsd-kind-icon">Provider<wbr>Kucoin</a></li>
 							</ul>
 						</section>
@@ -89,15 +92,19 @@
 								<li class="tsd-kind-interface"><a href="interfaces/ibalance.html" class="tsd-kind-icon">IBalance</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/icandle.html" class="tsd-kind-icon">ICandle</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/ientryprice.html" class="tsd-kind-icon">IEntry<wbr>Price</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/ientrypricesummary.html" class="tsd-kind-icon">IEntry<wbr>Price<wbr>Summary</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/iorder.html" class="tsd-kind-icon">IOrder</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/iprovider.html" class="tsd-kind-icon">IProvider</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/iprovidercommon.html" class="tsd-kind-icon">IProvider<wbr>Common</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/iproviderevents.html" class="tsd-kind-icon">IProvider<wbr>Events</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-type-alias"><a href="modules.html#orderside" class="tsd-kind-icon">Order<wbr>Side</a></li>
+								<li class="tsd-kind-type-alias"><a href="modules.html#torderside" class="tsd-kind-icon">TOrder<wbr>Side</a></li>
+								<li class="tsd-kind-type-alias"><a href="modules.html#torderstatus" class="tsd-kind-icon">TOrder<wbr>Status</a></li>
+								<li class="tsd-kind-type-alias"><a href="modules.html#tordertype" class="tsd-kind-icon">TOrder<wbr>Type</a></li>
 							</ul>
 						</section>
 					</div>
@@ -106,12 +113,32 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Type aliases</h2>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
-					<a name="orderside" class="tsd-anchor"></a>
-					<h3>Order<wbr>Side</h3>
-					<div class="tsd-signature tsd-kind-icon">Order<wbr>Side<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;BUY&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;SELL&quot;</span></div>
+					<a name="torderside" class="tsd-anchor"></a>
+					<h3>TOrder<wbr>Side</h3>
+					<div class="tsd-signature tsd-kind-icon">TOrder<wbr>Side<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-symbol">typeof </span><a href="enums/orderside.html" class="tsd-signature-type" data-tsd-kind="Enumeration">OrderSide</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/interfaces/common/OrderSide.ts:1</li>
+							<li>Defined in src/clients/common/interfaces/IOrder.ts:47</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias">
+					<a name="torderstatus" class="tsd-anchor"></a>
+					<h3>TOrder<wbr>Status</h3>
+					<div class="tsd-signature tsd-kind-icon">TOrder<wbr>Status<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-symbol">typeof </span><a href="enums/orderstatus.html" class="tsd-signature-type" data-tsd-kind="Enumeration">OrderStatus</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/clients/common/interfaces/IOrder.ts:48</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias">
+					<a name="tordertype" class="tsd-anchor"></a>
+					<h3>TOrder<wbr>Type</h3>
+					<div class="tsd-signature tsd-kind-icon">TOrder<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-symbol">typeof </span><a href="enums/ordertype.html" class="tsd-signature-type" data-tsd-kind="Enumeration">OrderType</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/clients/common/interfaces/IOrder.ts:49</li>
 						</ul>
 					</aside>
 				</section>
@@ -134,7 +161,13 @@
 						<a href="enums/icandlechartintervalkeys.html" class="tsd-kind-icon">ICandle<wbr>Chart<wbr>Interval<wbr>Keys</a>
 					</li>
 					<li class=" tsd-kind-enum">
+						<a href="enums/orderside.html" class="tsd-kind-icon">Order<wbr>Side</a>
+					</li>
+					<li class=" tsd-kind-enum">
 						<a href="enums/orderstatus.html" class="tsd-kind-icon">Order<wbr>Status</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/ordertype.html" class="tsd-kind-icon">Order<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/errorapikey.html" class="tsd-kind-icon">Error<wbr>Api<wbr>Key</a>
@@ -155,6 +188,9 @@
 						<a href="classes/providerbinance.html" class="tsd-kind-icon">Provider<wbr>Binance</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/providerftx.html" class="tsd-kind-icon">Provider<wbr>Ftx</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/providerkucoin.html" class="tsd-kind-icon">Provider<wbr>Kucoin</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -173,16 +209,28 @@
 						<a href="interfaces/ientryprice.html" class="tsd-kind-icon">IEntry<wbr>Price</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/ientrypricesummary.html" class="tsd-kind-icon">IEntry<wbr>Price<wbr>Summary</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/iorder.html" class="tsd-kind-icon">IOrder</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/iprovider.html" class="tsd-kind-icon">IProvider</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/iprovidercommon.html" class="tsd-kind-icon">IProvider<wbr>Common</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/iproviderevents.html" class="tsd-kind-icon">IProvider<wbr>Events</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
-						<a href="modules.html#orderside" class="tsd-kind-icon">Order<wbr>Side</a>
+						<a href="modules.html#torderside" class="tsd-kind-icon">TOrder<wbr>Side</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#torderstatus" class="tsd-kind-icon">TOrder<wbr>Status</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#tordertype" class="tsd-kind-icon">TOrder<wbr>Type</a>
 					</li>
 				</ul>
 			</nav>

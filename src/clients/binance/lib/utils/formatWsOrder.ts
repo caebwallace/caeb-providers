@@ -1,5 +1,5 @@
 import { ExecutionReport } from 'binance-api-node';
-import { IOrder, OrderType } from '../../../../interfaces/common/IOrder';
+import { IOrder } from '../../../common/interfaces';
 import { nz } from '../../../../utils/numbers/numbers';
 
 /**

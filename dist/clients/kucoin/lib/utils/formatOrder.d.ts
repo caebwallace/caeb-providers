@@ -1,5 +1,4 @@
-import { IAsset } from '../../../../interfaces';
-import { IOrder } from '../../../../interfaces/common/IOrder';
+import { IAsset, IOrder } from '../../../common/interfaces';
 export interface KucoinOrder {
     id: string;
     symbol: string;

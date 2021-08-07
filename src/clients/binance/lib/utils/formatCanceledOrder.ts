@@ -1,5 +1,5 @@
 import { CancelOrderResult } from 'binance-api-node';
-import { IOrder } from '../../../../interfaces/';
+import { IOrder } from '../../../common/interfaces';
 import { nz } from '../../../../utils/numbers/numbers';
 
 /**

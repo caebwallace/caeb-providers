@@ -1,4 +1,4 @@
-import { IBalance } from '../../../../interfaces/';
+import { IBalance } from '../../../common/interfaces';
 interface AssetBalance {
     id: string;
     currency: string;

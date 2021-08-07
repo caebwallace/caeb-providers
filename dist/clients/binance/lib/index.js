@@ -67,13 +67,13 @@ var __awaiter =
 Object.defineProperty(exports, '__esModule', { value: true });
 exports.ProviderBinance = void 0;
 const binance_api_node_1 = __importStar(require('binance-api-node'));
-const interfaces_1 = require('../../../interfaces');
 const utils_1 = require('./utils');
 const errors_1 = require('../../../utils/errors');
 const numbers_1 = require('../../../utils/numbers/numbers');
 const logger_1 = require('../../../utils/logger/logger');
-const index_1 = require('../../common/lib/index');
-class ProviderBinance extends index_1.ProviderCommon {
+const interfaces_1 = require('../../common/interfaces');
+const lib_1 = require('../../common/lib');
+class ProviderBinance extends lib_1.ProviderCommon {
     constructor(props) {
         super();
         this.name = 'binance';
@@ -83,6 +83,7 @@ class ProviderBinance extends index_1.ProviderCommon {
         this.testnet = false;
         this.recvWindow = 60000;
         this.weightLimitPerMinute = 1200;
+        this.cacheSymbolsTTL = 60 * 60 * 1000;
         if (props && props.name) this.name = props.name;
         if (props && props.httpBase) this.httpBase = props.httpBase;
         if (props && props.apiKey) this.apiKey = props.apiKey;
@@ -101,8 +102,13 @@ class ProviderBinance extends index_1.ProviderCommon {
     }
     getExchangeInfo() {
         return __awaiter(this, void 0, void 0, function* () {
+            if (this.cacheSymbols && this.cacheSymbols.length && Date.now() - this.cacheSymbolsLast < this.cacheSymbolsTTL) {
+                return this.cacheSymbols;
+            }
             const { symbols, rateLimits } = yield this.client.exchangeInfo();
-            return symbols.map(symbol => utils_1.formatTickerInfo(symbol));
+            this.cacheSymbols = symbols.map(symbol => utils_1.formatTickerInfo(symbol));
+            this.cacheSymbolsLast = Date.now();
+            return this.cacheSymbols;
         });
     }
     getTickerInfo(baseAsset, quoteAsset) {
@@ -146,6 +152,11 @@ class ProviderBinance extends index_1.ProviderCommon {
             return balances.find(a => a.asset === asset);
         });
     }
+    getAllOrdersForPairs(pairs, status, daysRange) {
+        return __awaiter(this, void 0, void 0, function* () {
+            throw new Error('Method not implemented.');
+        });
+    }
     getAllOrders(baseAsset, quoteAsset, orderId) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.respectApiRatioLimits();
@@ -173,7 +184,7 @@ class ProviderBinance extends index_1.ProviderCommon {
                 yield this.client.order({
                     symbol,
                     side,
-                    type: binance_api_node_1.OrderType.LIMIT,
+                    type: 'LIMIT',
                     quantity: quantity.toString(),
                     price: price.toString(),
                 }),

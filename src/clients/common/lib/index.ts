@@ -3,10 +3,10 @@ import TypedEmitter from 'typed-emitter';
 import { timeout } from '../../../utils/timeout/timeout';
 import { createLogger, Logger } from '../../../utils/logger/logger';
 import { getVariation, nz } from '../../../utils/numbers/numbers';
-import { ICandle, IProviderEvents } from '../../../interfaces';
+import { ICandle, IProviderEvents } from '../interfaces';
 import { IProviderCommon } from '../interfaces/IProviderCommon';
 
-// Provider for Kucoin
+// Provider Common methods
 export class ProviderCommon extends (EventEmitter as new () => TypedEmitter<IProviderEvents>) implements IProviderCommon {
     /**
      * Define the max wheight to avoid banning.
@@ -100,6 +100,7 @@ export class ProviderCommon extends (EventEmitter as new () => TypedEmitter<IPro
             if (spotLimit > this.weightLimitPerMinute * limit.ratio) {
                 this.log.warn(`[API LIMIT] ${limit.type} Take a break (${limit.waitTimeMS}ms) to avoid IP ban : ${spotLimit} / ${this.weightLimitPerMinute}`);
                 await timeout(limit.waitTimeMS);
+                continue;
             }
         }
 

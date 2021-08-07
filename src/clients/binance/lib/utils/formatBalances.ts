@@ -1,6 +1,6 @@
-import { IBalance } from '../../../../interfaces/';
 import { nz } from '../../../../utils/numbers/numbers';
 import { AssetBalance } from 'binance-api-node';
+import { IBalance } from '../../../common/interfaces';
 
 /**
  * Format balances to IBalance and hideSmallBalances if asked.

@@ -1,5 +1,4 @@
-import { CandleChartInterval } from 'binance-api-node';
-import { IAsset, ICandleChartIntervalKeys } from '../../../interfaces';
+import { IAsset, ICandleChartIntervalKeys } from '../../common/interfaces';
 import { ProviderBinance } from '.';
 import { IProviderBinance } from '../interfaces/IProviderBinance';
 
@@ -27,6 +26,7 @@ describe('test client', () => {
         });
         it('should be defined', () => {
             expect(provider).toBeDefined();
+            expect(provider.id).toBeDefined();
             expect(provider.name).toBeDefined();
             expect(provider.apiKey).toBeDefined();
             expect(provider.apiSecret).toBeDefined();
@@ -54,10 +54,13 @@ describe('test client', () => {
             const candles = await provider.getHistory(baseAsset, quoteAsset, ICandleChartIntervalKeys.ONE_DAY, 7);
             const [low, max, variation] = provider.getVolatility(candles);
             // console.log(low, max, variation);
+            expect(typeof low).toBe('number');
+            expect(typeof max).toBe('number');
+            expect(typeof variation).toBe('number');
         });
         it('provider.getPrice()', async () => {
             const price = await provider.getPrice(baseAsset, quoteAsset);
-            // console.log('price', price);
+            expect(typeof price).toBe('number');
         });
     });
 
@@ -67,31 +70,37 @@ describe('test client', () => {
             provider = createProvider(mock_account);
         });
 
-        it('provider.getAccountBalances()', async () => {
-            const balances = await provider.getAccountBalances();
-            expect(balances).toBeInstanceOf(Array);
+        describe('account', () => {
+            it('provider.getAccountBalances()', async () => {
+                const balances = await provider.getAccountBalances();
+                expect(balances).toBeInstanceOf(Array);
+            });
+
+            it('provider.getAssetBalance()', async () => {
+                const balance = await provider.getAssetBalance(quoteAsset);
+                expect(typeof balance.asset).toBe('string');
+                expect(typeof balance.free).toBe('number');
+                expect(typeof balance.locked).toBe('number');
+            });
         });
 
-        it('provider.getAssetBalance()', async () => {
-            const balance = await provider.getAssetBalance(quoteAsset);
-            // console.log('getAssetBalance', balance);
+        describe('orders', () => {
+            it('provider.getAllOrders()', async () => {
+                expect(provider.getAllOrders).toBeDefined();
+                const orders = await provider.getAllOrders(baseAsset, quoteAsset);
+                // console.log(balances);
+            });
+
+            // it('provider.createOrderLimit()', async () => {
+            //     const order = await provider.createOrderLimit('BUY', 0.00001, 800, baseAsset, quoteAsset);
+            // });
+
+            // describe('orders', () => {
+            //     it('provider.cancelOpenOrders()', async () => {
+            //         const closedOrders = await provider.cancelOpenOrders(baseAsset, quoteAsset);
+            //         // console.log('closedOrders', closedOrders);
+            //     });
+            // });
         });
-
-        it('provider.getAllOrders()', async () => {
-            expect(provider.getAllOrders).toBeDefined();
-            const orders = await provider.getAllOrders(baseAsset, quoteAsset);
-            // console.log(balances);
-        });
-
-        // it('provider.createOrderLimit()', async () => {
-        //     const order = await provider.createOrderLimit('BUY', 0.00001, 800, baseAsset, quoteAsset);
-        // });
-
-        // describe('orders', () => {
-        //     it('provider.cancelOpenOrders()', async () => {
-        //         const closedOrders = await provider.cancelOpenOrders(baseAsset, quoteAsset);
-        //         // console.log('closedOrders', closedOrders);
-        //     });
-        // });
     });
 });

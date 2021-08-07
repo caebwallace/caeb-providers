@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IProvider | caeb-providers - v0.1.0</title>
-	<meta name="description" content="Documentation for caeb-providers - v0.1.0">
+	<title>IProvider | @caeb/providers - v0.2.0</title>
+	<meta name="description" content="Documentation for @caeb/providers - v0.2.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<script async src="../assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">caeb-providers - v0.1.0</a>
+					<a href="../index.html" class="title">@caeb/providers - v0.2.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -52,7 +52,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../modules.html">caeb-providers - v0.1.0</a>
+					<a href="../modules.html">@caeb/providers - v0.2.0</a>
 				</li>
 				<li>
 					<a href="iprovider.html">IProvider</a>
@@ -82,6 +82,7 @@
 				<h3>Implemented by</h3>
 				<ul class="tsd-hierarchy">
 					<li><a href="../classes/providerbinance.html" class="tsd-signature-type" data-tsd-kind="Class">ProviderBinance</a></li>
+					<li><a href="../classes/providerftx.html" class="tsd-signature-type" data-tsd-kind="Class">ProviderFtx</a></li>
 					<li><a href="../classes/providerkucoin.html" class="tsd-signature-type" data-tsd-kind="Class">ProviderKucoin</a></li>
 				</ul>
 			</section>
@@ -146,7 +147,7 @@
 					<div class="tsd-signature tsd-kind-icon">api<wbr>Key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/interfaces/common/IProvider.ts:12</li>
+							<li>Defined in src/clients/common/interfaces/IProvider.ts:11</li>
 						</ul>
 					</aside>
 				</section>
@@ -156,7 +157,7 @@
 					<div class="tsd-signature tsd-kind-icon">api<wbr>Pass<wbr>Phrase<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/interfaces/common/IProvider.ts:14</li>
+							<li>Defined in src/clients/common/interfaces/IProvider.ts:13</li>
 						</ul>
 					</aside>
 				</section>
@@ -166,7 +167,7 @@
 					<div class="tsd-signature tsd-kind-icon">api<wbr>Secret<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/interfaces/common/IProvider.ts:13</li>
+							<li>Defined in src/clients/common/interfaces/IProvider.ts:12</li>
 						</ul>
 					</aside>
 				</section>
@@ -176,7 +177,7 @@
 					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/interfaces/common/IProvider.ts:10</li>
+							<li>Defined in src/clients/common/interfaces/IProvider.ts:9</li>
 						</ul>
 					</aside>
 				</section>
@@ -186,7 +187,7 @@
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/interfaces/common/IProvider.ts:11</li>
+							<li>Defined in src/clients/common/interfaces/IProvider.ts:10</li>
 						</ul>
 					</aside>
 				</section>
@@ -196,7 +197,7 @@
 					<div class="tsd-signature tsd-kind-icon">sub<wbr>Account<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/interfaces/common/IProvider.ts:15</li>
+							<li>Defined in src/clients/common/interfaces/IProvider.ts:14</li>
 						</ul>
 					</aside>
 				</section>
@@ -206,7 +207,7 @@
 					<div class="tsd-signature tsd-kind-icon">testnet<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/interfaces/common/IProvider.ts:16</li>
+							<li>Defined in src/clients/common/interfaces/IProvider.ts:15</li>
 						</ul>
 					</aside>
 				</section>
@@ -262,13 +263,13 @@
 					<a name="cancelopenorders" class="tsd-anchor"></a>
 					<h3>cancel<wbr>Open<wbr>Orders</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">cancel<wbr>Open<wbr>Orders<span class="tsd-signature-symbol">(</span>baseAsset<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, quoteAsset<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="iorder.html" class="tsd-signature-type" data-tsd-kind="Interface">IOrder</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">cancel<wbr>Open<wbr>Orders<span class="tsd-signature-symbol">(</span>baseAsset<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, quoteAsset<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><a href="iorder.html" class="tsd-signature-type" data-tsd-kind="Interface">IOrder</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/interfaces/common/IProvider.ts:28</li>
+									<li>Defined in src/clients/common/interfaces/IProvider.ts:27</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -280,7 +281,7 @@
 									<h5>quoteAsset: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="iorder.html" class="tsd-signature-type" data-tsd-kind="Interface">IOrder</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><a href="iorder.html" class="tsd-signature-type" data-tsd-kind="Interface">IOrder</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -288,19 +289,19 @@
 					<a name="createorderlimit" class="tsd-anchor"></a>
 					<h3>create<wbr>Order<wbr>Limit</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Order<wbr>Limit<span class="tsd-signature-symbol">(</span>side<span class="tsd-signature-symbol">: </span><a href="../modules.html#orderside" class="tsd-signature-type" data-tsd-kind="Type alias">OrderSide</a>, quantity<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, price<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, baseAsset<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, quoteAsset<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="iorder.html" class="tsd-signature-type" data-tsd-kind="Interface">IOrder</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Order<wbr>Limit<span class="tsd-signature-symbol">(</span>side<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">&quot;BUY&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;SELL&quot;</span>, quantity<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, price<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, baseAsset<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, quoteAsset<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="iorder.html" class="tsd-signature-type" data-tsd-kind="Interface">IOrder</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/interfaces/common/IProvider.ts:27</li>
+									<li>Defined in src/clients/common/interfaces/IProvider.ts:26</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>side: <a href="../modules.html#orderside" class="tsd-signature-type" data-tsd-kind="Type alias">OrderSide</a></h5>
+									<h5>side: <span class="tsd-signature-type">&quot;BUY&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;SELL&quot;</span></h5>
 								</li>
 								<li>
 									<h5>quantity: <span class="tsd-signature-type">number</span></h5>
@@ -374,7 +375,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/interfaces/common/IProvider.ts:22</li>
+									<li>Defined in src/clients/common/interfaces/IProvider.ts:21</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -400,7 +401,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/interfaces/common/IProvider.ts:23</li>
+									<li>Defined in src/clients/common/interfaces/IProvider.ts:22</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="ibalance.html" class="tsd-signature-type" data-tsd-kind="Interface">IBalance</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -417,7 +418,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/interfaces/common/IProvider.ts:26</li>
+									<li>Defined in src/clients/common/interfaces/IProvider.ts:25</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -446,7 +447,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/interfaces/common/IProvider.ts:25</li>
+									<li>Defined in src/clients/common/interfaces/IProvider.ts:24</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -475,7 +476,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/interfaces/common/IProvider.ts:29</li>
+									<li>Defined in src/clients/common/interfaces/IProvider.ts:28</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -492,7 +493,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/interfaces/common/IProvider.ts:24</li>
+									<li>Defined in src/clients/common/interfaces/IProvider.ts:23</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -515,7 +516,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/interfaces/common/IProvider.ts:17</li>
+									<li>Defined in src/clients/common/interfaces/IProvider.ts:16</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="iasset.html" class="tsd-signature-type" data-tsd-kind="Interface">IAsset</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -532,7 +533,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/interfaces/common/IProvider.ts:20</li>
+									<li>Defined in src/clients/common/interfaces/IProvider.ts:19</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -582,7 +583,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/interfaces/common/IProvider.ts:18</li>
+									<li>Defined in src/clients/common/interfaces/IProvider.ts:17</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -608,7 +609,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/interfaces/common/IProvider.ts:19</li>
+									<li>Defined in src/clients/common/interfaces/IProvider.ts:18</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -634,7 +635,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/interfaces/common/IProvider.ts:21</li>
+									<li>Defined in src/clients/common/interfaces/IProvider.ts:20</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -657,7 +658,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/interfaces/common/IProvider.ts:30</li>
+									<li>Defined in src/clients/common/interfaces/IProvider.ts:29</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1073,7 +1074,13 @@
 						<a href="../enums/icandlechartintervalkeys.html" class="tsd-kind-icon">ICandle<wbr>Chart<wbr>Interval<wbr>Keys</a>
 					</li>
 					<li class=" tsd-kind-enum">
+						<a href="../enums/orderside.html" class="tsd-kind-icon">Order<wbr>Side</a>
+					</li>
+					<li class=" tsd-kind-enum">
 						<a href="../enums/orderstatus.html" class="tsd-kind-icon">Order<wbr>Status</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="../enums/ordertype.html" class="tsd-kind-icon">Order<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="../classes/errorapikey.html" class="tsd-kind-icon">Error<wbr>Api<wbr>Key</a>
@@ -1094,6 +1101,9 @@
 						<a href="../classes/providerbinance.html" class="tsd-kind-icon">Provider<wbr>Binance</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="../classes/providerftx.html" class="tsd-kind-icon">Provider<wbr>Ftx</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="../classes/providerkucoin.html" class="tsd-kind-icon">Provider<wbr>Kucoin</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -1110,6 +1120,9 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="ientryprice.html" class="tsd-kind-icon">IEntry<wbr>Price</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="ientrypricesummary.html" class="tsd-kind-icon">IEntry<wbr>Price<wbr>Summary</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="iorder.html" class="tsd-kind-icon">IOrder</a>
@@ -1232,10 +1245,19 @@
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface">
+						<a href="iprovidercommon.html" class="tsd-kind-icon">IProvider<wbr>Common</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="iproviderevents.html" class="tsd-kind-icon">IProvider<wbr>Events</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
-						<a href="../modules.html#orderside" class="tsd-kind-icon">Order<wbr>Side</a>
+						<a href="../modules.html#torderside" class="tsd-kind-icon">TOrder<wbr>Side</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#torderstatus" class="tsd-kind-icon">TOrder<wbr>Status</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#tordertype" class="tsd-kind-icon">TOrder<wbr>Type</a>
 					</li>
 				</ul>
 			</nav>

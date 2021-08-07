@@ -1,7 +1,7 @@
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
-exports.OrderType = exports.OrderStatus = exports.ICandleChartIntervalInSeconds = exports.ICandleChartIntervalKeys = void 0;
-var ICandleChartInterval_1 = require('./common/ICandleChartInterval');
+exports.OrderSide = exports.OrderType = exports.OrderStatus = exports.ICandleChartIntervalInSeconds = exports.ICandleChartIntervalKeys = void 0;
+var ICandleChartInterval_1 = require('./ICandleChartInterval');
 Object.defineProperty(exports, 'ICandleChartIntervalKeys', {
     enumerable: true,
     get: function () {
@@ -14,7 +14,7 @@ Object.defineProperty(exports, 'ICandleChartIntervalInSeconds', {
         return ICandleChartInterval_1.ICandleChartIntervalInSeconds;
     },
 });
-var IOrder_1 = require('./common/IOrder');
+var IOrder_1 = require('./IOrder');
 Object.defineProperty(exports, 'OrderStatus', {
     enumerable: true,
     get: function () {
@@ -25,5 +25,11 @@ Object.defineProperty(exports, 'OrderType', {
     enumerable: true,
     get: function () {
         return IOrder_1.OrderType;
+    },
+});
+Object.defineProperty(exports, 'OrderSide', {
+    enumerable: true,
+    get: function () {
+        return IOrder_1.OrderSide;
     },
 });

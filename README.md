@@ -2,17 +2,59 @@
 
 ![NPM Version](https://badge.fury.io/js/caeb-providers.svg)
 
-`caeb-providers` is a nodejs library to provide an easy access to blockains balances and transactions.
+`@caeb/providers` is a nodejs (TypeScript) library to provide universal interface to read balances and manage orders for supported providers.
+
+**This version is a proof of work for all my private tools in development.**
+
+All will be usable on v1.0.0, secure, but below please considers to use that library in your projects as dangerous to include.
+
+Anyway, that lib is the foundation stone of a lot of my projects (portfolio, different kind of bots) to abstract the exchange behind blockchain interactions.
 
 ## Install
 
 ```shell
-yarn add caeb-providers
+yarn add @caeb/providers
 
 # - or -
 
-npm i caeb-providers
+npm i @caeb/providers
 ```
+
+## Providers supported
+
+[X] Binance
+[X] Kucoin
+[X] FTX
+[ ] Terra Luna (Next)
+[ ] Gate.io
+[ ] Ethereum
+[ ] Polygon / Matic
+[ ] Binance Smart Chain
+[ ] Avalanche
+[ ] Fantom Opera
+[ ] Celsius Network (Read Only)
+
+## Methods
+
+List of abstract methods.
+
+#### `public async getExchangeInfo(): Promise<IAsset[]>`
+
+Returns all assets available on the network.
+
+| Key (IAsset)   | Type   | Description                                                |
+| -------------- | ------ | ---------------------------------------------------------- |
+| baseAsset      | string | The base asset (ie: BTC)                                   |
+| quoteAsset     | string | The quote asset (ie: USDT)                                 |
+| pricePrecision | number | Base asset count of decimals                               |
+| quotePrecision | number | Quote asset count of decimals                              |
+| minPrice       | number | The minimum quote asset price to create an order           |
+| maxPrice       | number | The maximum quote asset price to create an order           |
+| minQty         | number | The minimum base asset size to create an order             |
+| stepSize       | number | The base asset size increment                              |
+| minNotional    | number | The minimum amount of quote asset to create an order       |
+| status         | string | Trading is available for this pair ('TRADING' : 'LISTING') |
+| maxNumOrders   | number | [Optional] Maximum number of orders for the pair           |
 
 ## Documentation
 
@@ -20,7 +62,7 @@ Visit [https://caebwallace.github.io/caeb-providers/](https://caebwallace.github
 
 ## Want to donate ?
 
-If you like **that project and my work**, you can send me your **favorite shitcoin** to my **ERC20** / **BEP20** wallet address : [0x1Ed970C1D3F9B85bA6607d45C752E22D9b0b09f4](https://bscscan.com/address/0x1Ed970C1D3F9B85bA6607d45C752E22D9b0b09f4)
+If you like **that project and my work**, you can send me your **favorite altcoin** to my **ERC20** / **BEP20** wallet address : [0x1Ed970C1D3F9B85bA6607d45C752E22D9b0b09f4](https://bscscan.com/address/0x1Ed970C1D3F9B85bA6607d45C752E22D9b0b09f4)
 
 ## Credits
 

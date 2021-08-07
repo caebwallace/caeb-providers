@@ -1,4 +1,4 @@
-import { ICandle } from '../../../../interfaces/';
+import { ICandle } from '../../../common/interfaces';
 
 // [
 //     "1545904980",             //Start time of the candle cycle

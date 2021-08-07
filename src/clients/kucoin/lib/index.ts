@@ -1,7 +1,7 @@
 const ClientKucoin = require('kucoin-node-sdk');
 
 import pLimit from 'p-limit';
-import { IAsset, IBalance, ICandle, IOrder, IProvider, OrderSide, ICandleChartIntervalKeys, ICandleChartIntervalInSeconds } from '../../../interfaces';
+import { IAsset, IBalance, ICandle, IOrder, IProvider, TOrderSide, ICandleChartIntervalKeys, ICandleChartIntervalInSeconds } from '../../common/interfaces';
 import { CandleChartInterval } from '../interfaces/CandleChartInterval';
 import { createLogger, Logger } from '../../../utils/logger/logger';
 import { IProviderKucoin } from '../interfaces/IProviderKucoin';
@@ -11,7 +11,8 @@ import { formatOrder } from './utils/formatOrder';
 import { ErrorInvalidSymbol } from '../../../utils/errors/ErrorInvalidSymbol';
 import { formatCandle, KucoinKline } from './utils/formatCandle';
 import { roundToFloor } from '../../../utils/numbers/numbers';
-import { ProviderCommon } from '../../common/lib/index';
+import { ProviderCommon } from '../../common/lib';
+import { timeout } from '../../../utils/timeout/timeout';
 
 // Provider for Kucoin
 export class ProviderKucoin extends ProviderCommon implements IProvider {
@@ -103,6 +104,11 @@ export class ProviderKucoin extends ProviderCommon implements IProvider {
      */
     public log: Logger;
 
+    // Cache symbols
+    private cacheSymbols: IAsset[];
+    private cacheSymbolsLast: number;
+    private cacheSymbolsTTL: number = 60 * 60 * 1000;
+
     /**
      * Init the Provider with config.
      *
@@ -150,9 +156,14 @@ export class ProviderKucoin extends ProviderCommon implements IProvider {
      * @memberof ProviderKucoin
      */
     public async getExchangeInfo(): Promise<IAsset[]> {
+        if (this.cacheSymbols && this.cacheSymbols.length && Date.now() - this.cacheSymbolsLast < this.cacheSymbolsTTL) {
+            return this.cacheSymbols;
+        }
         await this.respectApiRatioLimits();
         const { data: symbols } = await this.client.rest.Market.Symbols.getSymbolsList();
-        return symbols.map((symbol: any) => formatTickerInfo(symbol));
+        this.cacheSymbols = symbols.map((symbol: any) => formatTickerInfo(symbol));
+        this.cacheSymbolsLast = Date.now();
+        return this.cacheSymbols;
     }
 
     /**
@@ -247,10 +258,42 @@ export class ProviderKucoin extends ProviderCommon implements IProvider {
     }
 
     /**
+     * Get asset balance.
+     *
+     * @returns {Promise<IBalance>} - Asset balance.
+     */
+    public async getAssetBalance(asset: string): Promise<IBalance> {
+        const balances = await this.getAccountBalances();
+        return balances.find(a => a.asset === asset);
+    }
+
+    /**
+     * Grouping order request for an array of pairs.
+     *
+     * @param {{ baseAsset: string; quoteAsset: string }[]} pairs - Pairs of asssets to filter.
+     * @param {'done' | 'active'} status - The orders status.
+     * @param {number} daysRange - The number of days to request (default: 365).
+     * @returns {IOrder[]} - The list of orders.
+     */
+    public async getAllOrdersForPairs(pairs?: { baseAsset: string; quoteAsset: string }[], status?: 'done' | 'active', daysRange?: number): Promise<IOrder[]> {
+        const orders = await this.__getAllOrders(undefined, undefined, status, 'TRADE', daysRange);
+
+        // If pairs must be filtered, get unique symbols list and compare with orders
+        if (pairs && pairs.length) {
+            const symbols = [...new Set(pairs.map(p => this.formatSymbol(p.baseAsset, p.quoteAsset)))];
+            return orders.filter(o => symbols.includes(this.formatSymbol(o.baseAsset, o.quoteAsset)));
+        }
+
+        // Else returns all list
+        return orders;
+    }
+
+    /**
      * Get All 'done' orders for a symbol.
      *
      * @param {string} baseAsset - The base asset.
      * @param {string} quoteAsset - The quote asset.
+     * @param {number} daysRange - The number of days to request (default: 365).
      * @returns {IOrder[]} - The list of orders.
      * @memberof ProviderKucoin
      */
@@ -263,6 +306,7 @@ export class ProviderKucoin extends ProviderCommon implements IProvider {
      *
      * @param {string} baseAsset - The base asset.
      * @param {string} quoteAsset - The quote asset.
+     * @param {number} daysRange - The number of days to request (default: 365).
      * @returns {IOrder[]} - The list of orders.
      * @memberof ProviderKucoin
      */
@@ -296,12 +340,7 @@ export class ProviderKucoin extends ProviderCommon implements IProvider {
         return orders;
     }
 
-    public async createOrderLimit(side: OrderSide, quantity: number, price: number, baseAsset: string, quoteAsset: string): Promise<IOrder> {
-        await this.respectApiRatioLimits();
-        throw new Error('Method not implemented.');
-    }
-
-    public async getAssetBalance(asset: string): Promise<IBalance> {
+    public async createOrderLimit(side: TOrderSide, quantity: number, price: number, baseAsset: string, quoteAsset: string): Promise<IOrder> {
         await this.respectApiRatioLimits();
         throw new Error('Method not implemented.');
     }
@@ -330,19 +369,24 @@ export class ProviderKucoin extends ProviderCommon implements IProvider {
      * @returns {IOrder[]} - The orders list.
      */
     private async __getAllOrders(
-        baseAsset: string,
-        quoteAsset: string,
-        status: 'done' | 'active' = 'done',
+        baseAsset?: string,
+        quoteAsset?: string,
+        status?: 'done' | 'active',
         tradeType: 'TRADE' | 'MARGIN_TRADE' = 'TRADE',
         daysRange: number = 365,
     ): Promise<IOrder[]> {
         await this.respectApiRatioLimits();
 
-        // Get symbols infos
-        const tickerInfo = await this.getTickerInfo(baseAsset, quoteAsset);
+        // If symbol is defined
+        const symbol = baseAsset && quoteAsset ? this.formatSymbol(baseAsset, quoteAsset) : undefined;
 
-        // Params
-        const symbol = this.formatSymbol(baseAsset, quoteAsset);
+        // // Request the first page
+        // const currentPage = 1;
+        // const pageSize = 500;
+        // const { orders } = await this.__getAllOrdersPerPage({ tradeType, symbol, status, baseAsset, quoteAsset, tickerInfo }, currentPage, pageSize);
+
+        // // Returns formated orders
+        // return orders;
 
         // Init loop
         const daysLimit = 7;
@@ -354,12 +398,14 @@ export class ProviderKucoin extends ProviderCommon implements IProvider {
         const finalDate = startAt - dailyMs * daysRange;
 
         // Init concurrency
-        const limit = pLimit(10);
+        const limit = pLimit(3);
         const input = [];
 
         // Prepare orders
         while (endAt > finalDate) {
-            input.push(limit(() => this.__getAllOrdersRequest({ tradeType, symbol, status, endAt, startAt, baseAsset, quoteAsset, tickerInfo })));
+            input.push(limit(() => this.__getAllOrdersRequest({ tradeType, symbol, status, endAt, startAt, baseAsset, quoteAsset })));
+            // input.push(limit(() => this.__getAllHistoricalOrders({ tradeType, symbol, status, endAt, startAt, baseAsset, quoteAsset })));
+            input.push(limit(() => timeout(200)));
             startAt -= dailyMs * daysLimit;
             endAt -= dailyMs * daysLimit;
         }
@@ -368,29 +414,95 @@ export class ProviderKucoin extends ProviderCommon implements IProvider {
         const results = await Promise.all(input);
 
         // Returns formated orders
-        return [].concat(...results);
+        return [].concat(...results).filter(o => o);
     }
 
     /**
-     * Function called with concurrency requests.
+     * Request all orders for a period.
      *
      * @param {*} obj - The metas used to request
      * @returns {Promise<IOrder[]>} - The list of orders
      */
     private async __getAllOrdersRequest(obj: any): Promise<IOrder[]> {
         const orders: IOrder[] = [];
-        const { tradeType, symbol, status, endAt, startAt, baseAsset, quoteAsset, tickerInfo } = obj;
+        const { tradeType, symbol, status, endAt, startAt } = obj;
         const req = await this.client.rest.Trade.Orders.getOrdersList(tradeType, {
             symbol,
             status,
             endAt,
             startAt,
         });
-        if (req?.data?.items) {
-            req.data.items.forEach((item: any) => {
+
+        const { totalNum, totalPage, items, ...other } = req?.data;
+        if (items && items.length) {
+            for (const item of items) {
+                const [baseAsset, quoteAsset] = item.symbol.split('-');
+                const tickerInfo = await this.getTickerInfo(baseAsset, quoteAsset);
+                orders.push(formatOrder({ ...item, baseAsset, quoteAsset }, tickerInfo));
+            }
+        }
+        // console.log(totalNum, totalPage, items.length);
+        return orders;
+    }
+
+    private async __getAllHistoricalOrders(obj: any): Promise<IOrder[]> {
+        const orders: IOrder[] = [];
+        const { symbol, status, endAt, startAt, currentPage, pageSize } = obj;
+
+        const req = await this.client.rest.Trade.Orders.getV1HistoricalOrdersList({
+            symbol,
+            status,
+            endAt,
+            startAt,
+            currentPage,
+            pageSize,
+        });
+
+        // console.log('Historical orders :', req);
+
+        const { totalNum, totalPage, items, ...other } = req?.data;
+        if (items && items.length) {
+            for (const item of items) {
+                const [baseAsset, quoteAsset] = item.symbol.split('-');
+                const tickerInfo = await this.getTickerInfo(baseAsset, quoteAsset);
+                orders.push(formatOrder({ ...item, baseAsset, quoteAsset }, tickerInfo));
+            }
+        }
+        // console.log('Historical orders :', totalNum, totalPage, items.length);
+        return orders;
+    }
+
+    /**
+     * Get orders with paginated results.
+     *
+     * @param {*} obj - The metas used to request.
+     * @param {number} currentPage - The currentPage to request (start at 1).
+     * @param {number} pageSize - The count of orders by page.
+     * @returns {Promise<{ orders: IOrder[]; currentPage: number; pageSize: number; totalNum: number; totalPage: number }>} - The list of orders and pagination states.
+     */
+    public async __getAllOrdersPerPage(
+        obj: any,
+        currentPage: number = 1,
+        pageSize: number = 500,
+    ): Promise<{ orders: IOrder[]; currentPage: number; pageSize: number; totalNum: number; totalPage: number }> {
+        const orders: IOrder[] = [];
+        const { tradeType, symbol, status, baseAsset, quoteAsset, endAt, startAt, tickerInfo } = obj;
+        const req = await this.client.rest.Trade.Orders.getOrdersList(tradeType, {
+            symbol,
+            status,
+            currentPage,
+            pageSize,
+            endAt,
+            startAt,
+        });
+
+        const { totalNum, totalPage, items, ...other } = req?.data;
+        if (items) {
+            items.forEach((item: any) => {
                 orders.push(formatOrder({ ...item, baseAsset, quoteAsset }, tickerInfo));
             });
         }
-        return orders;
+
+        return { orders, currentPage, pageSize, totalNum, totalPage };
     }
 }

@@ -1,4 +1,4 @@
-import { IBalance } from '../../../../interfaces/';
+import { IBalance } from '../../../common/interfaces';
 import { nz } from '../../../../utils/numbers/numbers';
 
 // Local Asset Balance interface

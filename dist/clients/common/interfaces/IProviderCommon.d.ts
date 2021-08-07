@@ -1,4 +1,4 @@
-import { ICandle } from '../../../interfaces/common/ICandle';
+import { ICandle } from './ICandle';
 export interface IProviderCommon {
     weightLimitPerMinute: number;
     weightLimitLevels: {

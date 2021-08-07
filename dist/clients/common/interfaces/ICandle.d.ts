@@ -6,8 +6,8 @@ export interface ICandle {
     close: number;
     volume: number;
     closeTime: Date;
-    quoteVolume: number;
-    trades: number;
-    baseAssetVolume: number;
-    quoteAssetVolume: number;
+    quoteVolume?: number;
+    trades?: number;
+    baseAssetVolume?: number;
+    quoteAssetVolume?: number;
 }
