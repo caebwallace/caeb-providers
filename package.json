@@ -1,6 +1,6 @@
 {
     "name": "caeb-providers",
-    "version": "0.2.2",
+    "version": "0.3.0",
     "description": "Providers CEX/DEX by Caeb Wallace",
     "main": "dist/index.js",
     "scripts": {
@@ -8,7 +8,7 @@
         "build:clean:before": "rimraf ./dist",
         "build:clean:after": "rimraf ./dist/__mocks__",
         "build:compile": "tsc --project tsconfig.build.json --skipLibCheck",
-        "build:watch": "ts-node-dev -r tsconfig-paths/register --respawn -- src/index.ts",
+        "build:watch": "tsc --watch",
         "test": "jest --verbose",
         "test:watch": "jest --watchAll --detectOpenHandles",
         "format": "prettier --write \"src/**/*.{ts,json}\"",
@@ -59,8 +59,9 @@
     "dependencies": {
         "@terra-money/terra.js": "^1.8.8",
         "binance-api-node": "^0.11.2",
+        "caeb-types": "^1.0.6",
         "ftx-api": "^1.0.13",
-        "kucoin-node-sdk": "^1.0.3",
+        "kucoin-node-sdk": "^1.0.4",
         "kucoin-sdk": "^2.0.1",
         "p-limit": "^2.3.0",
         "pino": "^6.11.3",

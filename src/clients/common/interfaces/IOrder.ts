@@ -17,6 +17,14 @@ export interface IOrder {
     updatedAt?: Date;
 }
 
+export interface IOrderMarketProps {
+    side: OrderSide;
+    quantity: number;
+    baseAsset: string;
+    quoteAsset: string;
+    clientOrderId?: string;
+}
+
 export enum OrderStatus {
     'CANCELED' = 'CANCELED',
     'EXPIRED' = 'EXPIRED',

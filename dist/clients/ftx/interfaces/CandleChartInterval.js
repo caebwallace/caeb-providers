@@ -9,4 +9,5 @@ var CandleChartInterval;
     CandleChartInterval['ONE_HOUR'] = '3600';
     CandleChartInterval['FOUR_HOURS'] = '14400';
     CandleChartInterval['ONE_DAY'] = '86400';
+    CandleChartInterval['ONE_WEEK'] = '604800';
 })((CandleChartInterval = exports.CandleChartInterval || (exports.CandleChartInterval = {})));

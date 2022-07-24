@@ -70,9 +70,9 @@ class ProviderCommon extends events_1.default {
     respectApiRatioLimits() {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            const limits = yield this.getApiRatioLimits();
-            const spotLimit = (_a = limits === null || limits === void 0 ? void 0 : limits.spot) === null || _a === void 0 ? void 0 : _a.usedWeight1m;
             for (const limit of this.weightLimitLevels) {
+                const limits = yield this.getApiRatioLimits();
+                const spotLimit = (_a = limits === null || limits === void 0 ? void 0 : limits.spot) === null || _a === void 0 ? void 0 : _a.usedWeight1m;
                 if (spotLimit > this.weightLimitPerMinute * limit.ratio) {
                     this.log.warn(
                         `[API LIMIT] ${limit.type} Take a break (${limit.waitTimeMS}ms) to avoid IP ban : ${spotLimit} / ${this.weightLimitPerMinute}`,

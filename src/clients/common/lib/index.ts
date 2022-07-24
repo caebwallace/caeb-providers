@@ -90,13 +90,10 @@ export class ProviderCommon extends (EventEmitter as new () => TypedEmitter<IPro
      * @memberof ProviderCommon
      */
     public async respectApiRatioLimits(): Promise<void> {
-        const limits = await this.getApiRatioLimits();
-
-        // If spot weight limit is more than 50% : pause it
-        const spotLimit = limits?.spot?.usedWeight1m;
-
         // Take a break if ratio approach limits.
         for (const limit of this.weightLimitLevels) {
+            const limits = await this.getApiRatioLimits();
+            const spotLimit = limits?.spot?.usedWeight1m;
             if (spotLimit > this.weightLimitPerMinute * limit.ratio) {
                 this.log.warn(`[API LIMIT] ${limit.type} Take a break (${limit.waitTimeMS}ms) to avoid IP ban : ${spotLimit} / ${this.weightLimitPerMinute}`);
                 await timeout(limit.waitTimeMS);

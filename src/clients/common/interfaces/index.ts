@@ -1,7 +1,5 @@
-export { IAsset } from './IAsset';
 export { IBalance } from './IBalance';
 export { ICandle } from './ICandle';
-export { ICandleChartIntervalKeys, ICandleChartIntervalInSeconds } from './ICandleChartInterval';
 export { IOrder, OrderStatus, OrderType, OrderSide, TOrderSide, TOrderStatus, TOrderType } from './IOrder';
 export { IProvider } from './IProvider';
 export { IProviderCommon } from './IProviderCommon';

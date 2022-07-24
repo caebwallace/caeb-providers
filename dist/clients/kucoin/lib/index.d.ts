@@ -1,8 +1,10 @@
 /// <reference types="pino" />
-import { IAsset, IBalance, ICandle, IOrder, IProvider, TOrderSide, ICandleChartIntervalKeys } from '../../common/interfaces';
+import { IBalance, ICandle, IOrder, IProvider, TOrderSide } from '../../common/interfaces';
 import { Logger } from '../../../utils/logger/logger';
 import { IProviderKucoin } from '../interfaces/IProviderKucoin';
 import { ProviderCommon } from '../../common/lib';
+import { IOrderMarketProps } from '../../common/interfaces/IOrder';
+import { IAsset, ICandleChartIntervalKeys } from 'caeb-types';
 export declare class ProviderKucoin extends ProviderCommon implements IProvider {
     name: string;
     readonly id: string;
@@ -13,19 +15,41 @@ export declare class ProviderKucoin extends ProviderCommon implements IProvider 
     apiSecret: string;
     apiPassPhrase: string;
     weightLimitPerMinute: number;
+    weightLimitLevels: {
+        type: string;
+        ratio: number;
+        waitTimeMS: number;
+    }[];
     client: any;
+    private datafeed;
+    private streamKeyDuplicate;
     log: Logger;
     private cacheSymbols;
     private cacheSymbolsLast;
     private cacheSymbolsTTL;
+    private _weightLimitPerMinuteCalls;
+    private historyLimitMax;
     constructor(props: IProviderKucoin);
+    getApiRatioLimits(): Promise<any>;
+    respectApiRatioLimits(): Promise<void>;
+    private _onApiRatioLimitsErrorCode;
     getExchangeInfo(): Promise<IAsset[]>;
     getPrice(baseAsset: string, quoteAsset: string): Promise<number>;
     getTickerInfo(baseAsset: string, quoteAsset: string): Promise<IAsset>;
-    getHistory(baseAsset: string, quoteAsset: string, intervalType?: ICandleChartIntervalKeys, limit?: number): Promise<ICandle[]>;
+    getHistory(
+        baseAsset: string,
+        quoteAsset: string,
+        intervalType?: ICandleChartIntervalKeys,
+        opts?: {
+            limit?: number;
+            startDate?: Date;
+            endDate?: Date;
+        },
+    ): Promise<ICandle[]>;
     formatSymbol(baseAsset: string, quoteAsset: string): string;
     getAccountBalances(): Promise<IBalance[]>;
     getAssetBalance(asset: string): Promise<IBalance>;
+    getOrderById(orderId: string): Promise<IOrder>;
     getAllOrdersForPairs(
         pairs?: {
             baseAsset: string;
@@ -38,8 +62,14 @@ export declare class ProviderKucoin extends ProviderCommon implements IProvider 
     getActiveOrders(baseAsset: string, quoteAsset: string, daysRange?: number): Promise<IOrder[]>;
     cancelOpenOrders(baseAsset: string, quoteAsset: string): Promise<IOrder[]>;
     createOrderLimit(side: TOrderSide, quantity: number, price: number, baseAsset: string, quoteAsset: string): Promise<IOrder>;
-    listenUserEvents(): void;
-    getApiRatioLimits(): Promise<any>;
+    createOrderMarket(props: IOrderMarketProps): Promise<IOrder>;
+    attachStreamAccount(): Promise<void>;
+    attachStreamTicker(baseAsset: string, quoteAsset: string): Promise<any>;
+    private _attachStreamPrivateAccount;
+    private _attachStreamPrivateOrder;
+    private _onAccountStreamMessage;
+    private _onAccountStreamOrder;
+    private _onTickerStreamMessage;
     private __getAllOrders;
     private __getAllOrdersRequest;
     private __getAllHistoricalOrders;

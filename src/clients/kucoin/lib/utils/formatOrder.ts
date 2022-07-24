@@ -1,5 +1,6 @@
-import { IAsset, IOrder, OrderSide, OrderStatus, OrderType } from '../../../common/interfaces';
+import { IOrder, OrderSide, OrderStatus, OrderType } from '../../../common/interfaces';
 import { nz, roundToFloor } from '../../../../utils/numbers/numbers';
+import { IAsset } from 'caeb-types';
 
 // {
 //     id: '60c73bbd2ff046000652ba13',

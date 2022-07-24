@@ -1,4 +1,5 @@
-import { IAsset, IOrder } from '../../../common/interfaces';
+import { IOrder } from '../../../common/interfaces';
+import { IAsset } from 'caeb-types';
 export interface KucoinOrder {
     id: string;
     symbol: string;

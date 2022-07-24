@@ -1,4 +1,4 @@
-import { IAsset, ICandleChartIntervalKeys } from '../../common/interfaces';
+import { IAsset, ICandleChartIntervalKeys } from 'caeb-types';
 import { ProviderFtx } from '.';
 import { IProviderFtx } from '../interfaces/IProviderFtx';
 import mock_account from '../__mocks__/account';
@@ -52,11 +52,11 @@ describe('test client', () => {
             expect(typeof price).toBe('number');
         });
         it('provider.getHistory()', async () => {
-            const candles = await provider.getHistory(baseAsset, quoteAsset, ICandleChartIntervalKeys.ONE_DAY, 7);
+            const candles = await provider.getHistory(baseAsset, quoteAsset, ICandleChartIntervalKeys.ONE_DAY, { limit: 7 });
             expect(candles).toBeInstanceOf(Array);
         });
         it('provider.getVolatility()', async () => {
-            const candles = await provider.getHistory(baseAsset, quoteAsset, ICandleChartIntervalKeys.ONE_DAY, 7);
+            const candles = await provider.getHistory(baseAsset, quoteAsset, ICandleChartIntervalKeys.ONE_DAY, { limit: 7 });
             const [low, max, variation] = provider.getVolatility(candles);
             // console.log(low, max, variation);
             expect(typeof low).toBe('number');

@@ -1,15 +1,5 @@
 import { RestClient as ClientFtx } from 'ftx-api';
-import {
-    IAsset,
-    IBalance,
-    ICandle,
-    IOrder,
-    IProvider,
-    TOrderSide,
-    OrderSide,
-    ICandleChartIntervalKeys,
-    ICandleChartIntervalInSeconds,
-} from '../../common/interfaces';
+import { IBalance, ICandle, IOrder, IProvider, TOrderSide, OrderSide } from '../../common/interfaces';
 // import { CandleChartInterval } from '../interfaces/CandleChartInterval';
 import { createLogger, Logger } from '../../../utils/logger/logger';
 import { IProviderFtx } from '../interfaces/IProviderFtx';
@@ -21,6 +11,8 @@ import { ErrorInvalidSymbol } from '../../../utils/errors/ErrorInvalidSymbol';
 import { roundToFloor } from '../../../utils/numbers/numbers';
 import { ProviderCommon } from '../../common/lib';
 import { CandleChartInterval } from '../interfaces/CandleChartInterval';
+import { IOrderMarketProps } from '../../common/interfaces/IOrder';
+import { IAsset, ICandleChartIntervalInSeconds, ICandleChartIntervalKeys } from 'caeb-types';
 
 // Provider for FTX
 export class ProviderFtx extends ProviderCommon implements IProvider {
@@ -116,6 +108,12 @@ export class ProviderFtx extends ProviderCommon implements IProvider {
             subAccountName: this.subAccountName,
         });
     }
+    apiPassPhrase?: string;
+    subAccountId?: string | number;
+    testnet?: boolean;
+    attachStreamTicker(ticker: string): void {
+        throw new Error('Method not implemented.');
+    }
 
     ////////////////////////////////////////////////// PUBLIC METHODS ///////////
 
@@ -154,7 +152,11 @@ export class ProviderFtx extends ProviderCommon implements IProvider {
         baseAsset: string,
         quoteAsset: string,
         intervalType: ICandleChartIntervalKeys = ICandleChartIntervalKeys.ONE_DAY,
-        limit: number = 200,
+        opts: {
+            limit?: number;
+            startDate?: Date;
+            endDate?: Date;
+        } = { limit: 200 },
     ): Promise<ICandle[]> {
         await this.respectApiRatioLimits();
 
@@ -164,7 +166,7 @@ export class ProviderFtx extends ProviderCommon implements IProvider {
 
         // Calculate limits
         const intervalMs = ICandleChartIntervalInSeconds[intervalType] * 1000;
-        const startAt = roundToFloor((Date.now() - intervalMs * limit) / 1000, 0);
+        const startAt = roundToFloor((Date.now() - intervalMs * opts.limit) / 1000, 0);
         const endAt = roundToFloor(Date.now() / 1000, 0);
 
         // Get klines and format
@@ -221,13 +223,18 @@ export class ProviderFtx extends ProviderCommon implements IProvider {
         return formatOrder({ ...order, baseAsset, quoteAsset }, tickerInfo);
     }
 
+    public async createOrderMarket(props: IOrderMarketProps): Promise<IOrder> {
+        await this.respectApiRatioLimits();
+        throw new Error('Method not implemented.');
+    }
+
     public async cancelOpenOrders(baseAsset: string, quoteAsset: string): Promise<IOrder[] | boolean> {
         await this.respectApiRatioLimits();
         const { result, success } = await this.client.cancelAllOrders({ market: this.formatSymbol(baseAsset, quoteAsset) });
         return success;
     }
 
-    listenUserEvents(): void {
+    attachStreamAccount(): void {
         throw new Error('Method not implemented.');
     }
 

@@ -22,25 +22,25 @@ var __exportStar =
     };
 Object.defineProperty(exports, '__esModule', { value: true });
 exports.ProviderFtx = exports.ProviderKucoin = exports.ProviderBinance = void 0;
-var lib_1 = require('./clients/binance/lib');
+const lib_1 = require('./clients/binance/lib');
 Object.defineProperty(exports, 'ProviderBinance', {
     enumerable: true,
     get: function () {
         return lib_1.ProviderBinance;
     },
 });
-var lib_2 = require('./clients/kucoin/lib');
-Object.defineProperty(exports, 'ProviderKucoin', {
-    enumerable: true,
-    get: function () {
-        return lib_2.ProviderKucoin;
-    },
-});
-var lib_3 = require('./clients/ftx/lib');
+const lib_2 = require('./clients/ftx/lib');
 Object.defineProperty(exports, 'ProviderFtx', {
     enumerable: true,
     get: function () {
-        return lib_3.ProviderFtx;
+        return lib_2.ProviderFtx;
+    },
+});
+const lib_3 = require('./clients/kucoin/lib');
+Object.defineProperty(exports, 'ProviderKucoin', {
+    enumerable: true,
+    get: function () {
+        return lib_3.ProviderKucoin;
     },
 });
 __exportStar(require('./clients/common/interfaces'), exports);

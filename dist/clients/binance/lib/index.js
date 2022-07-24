@@ -71,8 +71,8 @@ const utils_1 = require('./utils');
 const errors_1 = require('../../../utils/errors');
 const numbers_1 = require('../../../utils/numbers/numbers');
 const logger_1 = require('../../../utils/logger/logger');
-const interfaces_1 = require('../../common/interfaces');
 const lib_1 = require('../../common/lib');
+const caeb_types_1 = require('caeb-types');
 class ProviderBinance extends lib_1.ProviderCommon {
     constructor(props) {
         super();
@@ -100,6 +100,9 @@ class ProviderBinance extends lib_1.ProviderCommon {
             httpBase: this.httpBase,
         });
     }
+    attachStreamTicker(ticker) {
+        throw new Error('Method not implemented.');
+    }
     getExchangeInfo() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.cacheSymbols && this.cacheSymbols.length && Date.now() - this.cacheSymbolsLast < this.cacheSymbolsTTL) {
@@ -119,12 +122,12 @@ class ProviderBinance extends lib_1.ProviderCommon {
             return asset;
         });
     }
-    getHistory(baseAsset, quoteAsset, intervalType = interfaces_1.ICandleChartIntervalKeys.ONE_DAY, limit = 200) {
+    getHistory(baseAsset, quoteAsset, intervalType = caeb_types_1.ICandleChartIntervalKeys.ONE_DAY, opts = { limit: 200 }) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.respectApiRatioLimits();
             const symbol = this.formatSymbol(baseAsset, quoteAsset);
             const interval = binance_api_node_1.CandleChartInterval[intervalType];
-            const candles = yield this.client.candles({ symbol, interval, limit });
+            const candles = yield this.client.candles({ symbol, interval, limit: opts.limit });
             return candles.map(candle => utils_1.formatCandle(candle));
         });
     }
@@ -194,6 +197,12 @@ class ProviderBinance extends lib_1.ProviderCommon {
             return order;
         });
     }
+    createOrderMarket(props) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.respectApiRatioLimits();
+            throw new Error('Method not implemented.');
+        });
+    }
     cancelOpenOrders(baseAsset, quoteAsset) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.respectApiRatioLimits();
@@ -208,7 +217,7 @@ class ProviderBinance extends lib_1.ProviderCommon {
             }
         });
     }
-    listenUserEvents() {
+    attachStreamAccount() {
         return __awaiter(this, void 0, void 0, function* () {
             const ws = yield this.client.ws.user(msg =>
                 __awaiter(this, void 0, void 0, function* () {

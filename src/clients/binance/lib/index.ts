@@ -4,8 +4,10 @@ import { formatBalances, formatCanceledOrder, formatCandle, formatNewOrder, form
 import { ErrorInvalidSymbol } from '../../../utils/errors';
 import { roundToCeil } from '../../../utils/numbers/numbers';
 import { createLogger, Logger } from '../../../utils/logger/logger';
-import { IAsset, IBalance, ICandle, ICandleChartIntervalKeys, IOrder, IProvider } from '../../common/interfaces';
+import { IBalance, ICandle, IOrder, IProvider } from '../../common/interfaces';
 import { ProviderCommon } from '../../common/lib';
+import { IOrderMarketProps } from '../../common/interfaces/IOrder';
+import { IAsset, ICandleChartIntervalKeys } from 'caeb-types';
 
 // Provider for Binance
 export class ProviderBinance extends ProviderCommon implements IProvider {
@@ -102,6 +104,9 @@ export class ProviderBinance extends ProviderCommon implements IProvider {
     private cacheSymbolsLast: number;
     private cacheSymbolsTTL: number = 60 * 60 * 1000;
 
+    apiPassPhrase?: string;
+    subAccountId?: string | number;
+
     /**
      * Init the Provider with config.
      *
@@ -134,8 +139,9 @@ export class ProviderBinance extends ProviderCommon implements IProvider {
             httpBase: this.httpBase,
         });
     }
-    apiPassPhrase?: string;
-    subAccountId?: string | number;
+    attachStreamTicker(ticker: string): void {
+        throw new Error('Method not implemented.');
+    }
 
     //////////////////////////////////////////////// PUBLIC METHODS ///////////
 
@@ -185,12 +191,16 @@ export class ProviderBinance extends ProviderCommon implements IProvider {
         baseAsset: string,
         quoteAsset: string,
         intervalType: ICandleChartIntervalKeys = ICandleChartIntervalKeys.ONE_DAY,
-        limit: number = 200,
+        opts: {
+            limit?: number;
+            startDate?: Date;
+            endDate?: Date;
+        } = { limit: 200 },
     ): Promise<ICandle[]> {
         await this.respectApiRatioLimits();
         const symbol = this.formatSymbol(baseAsset, quoteAsset);
         const interval = CandleChartInterval[intervalType];
-        const candles = await this.client.candles({ symbol, interval, limit });
+        const candles = await this.client.candles({ symbol, interval, limit: opts.limit });
         return candles.map(candle => formatCandle(candle));
     }
 
@@ -323,6 +333,11 @@ export class ProviderBinance extends ProviderCommon implements IProvider {
         return order;
     }
 
+    public async createOrderMarket(props: IOrderMarketProps): Promise<IOrder> {
+        await this.respectApiRatioLimits();
+        throw new Error('Method not implemented.');
+    }
+
     /**
      * Cancel Open Orders.
      *
@@ -344,7 +359,7 @@ export class ProviderBinance extends ProviderCommon implements IProvider {
         }
     }
 
-    public async listenUserEvents(): Promise<ReconnectingWebSocketHandler> {
+    public async attachStreamAccount(): Promise<ReconnectingWebSocketHandler> {
         const ws = await this.client.ws.user(async msg => {
             if (msg.eventType && msg.eventType === 'executionReport') {
                 const symbols = await this.getExchangeInfo();

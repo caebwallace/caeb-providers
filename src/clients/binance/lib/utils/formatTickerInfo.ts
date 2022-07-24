@@ -1,4 +1,4 @@
-import { IAsset } from '../../../common/interfaces';
+import { IAsset } from 'caeb-types';
 import { nz } from '../../../../utils/numbers/numbers';
 
 /**

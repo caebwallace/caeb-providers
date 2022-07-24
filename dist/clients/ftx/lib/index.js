@@ -43,6 +43,7 @@ const ErrorInvalidSymbol_1 = require('../../../utils/errors/ErrorInvalidSymbol')
 const numbers_1 = require('../../../utils/numbers/numbers');
 const lib_1 = require('../../common/lib');
 const CandleChartInterval_1 = require('../interfaces/CandleChartInterval');
+const caeb_types_1 = require('caeb-types');
 class ProviderFtx extends lib_1.ProviderCommon {
     constructor(props) {
         super();
@@ -58,6 +59,9 @@ class ProviderFtx extends lib_1.ProviderCommon {
         this.client = new ftx_api_1.RestClient(this.apiKey, this.apiSecret, {
             subAccountName: this.subAccountName,
         });
+    }
+    attachStreamTicker(ticker) {
+        throw new Error('Method not implemented.');
     }
     getApiRatioLimits() {
         return __awaiter(this, void 0, void 0, function* () {});
@@ -91,13 +95,13 @@ class ProviderFtx extends lib_1.ProviderCommon {
             return price;
         });
     }
-    getHistory(baseAsset, quoteAsset, intervalType = interfaces_1.ICandleChartIntervalKeys.ONE_DAY, limit = 200) {
+    getHistory(baseAsset, quoteAsset, intervalType = caeb_types_1.ICandleChartIntervalKeys.ONE_DAY, opts = { limit: 200 }) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.respectApiRatioLimits();
             const symbol = this.formatSymbol(baseAsset, quoteAsset);
             const interval = CandleChartInterval_1.CandleChartInterval[intervalType];
-            const intervalMs = interfaces_1.ICandleChartIntervalInSeconds[intervalType] * 1000;
-            const startAt = numbers_1.roundToFloor((Date.now() - intervalMs * limit) / 1000, 0);
+            const intervalMs = caeb_types_1.ICandleChartIntervalInSeconds[intervalType] * 1000;
+            const startAt = numbers_1.roundToFloor((Date.now() - intervalMs * opts.limit) / 1000, 0);
             const endAt = numbers_1.roundToFloor(Date.now() / 1000, 0);
             const { result: candles } = yield this.client.getHistoricalPrices({
                 market_name: symbol,
@@ -154,6 +158,12 @@ class ProviderFtx extends lib_1.ProviderCommon {
             return formatOrder_1.formatOrder(Object.assign(Object.assign({}, order), { baseAsset, quoteAsset }), tickerInfo);
         });
     }
+    createOrderMarket(props) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.respectApiRatioLimits();
+            throw new Error('Method not implemented.');
+        });
+    }
     cancelOpenOrders(baseAsset, quoteAsset) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.respectApiRatioLimits();
@@ -161,7 +171,7 @@ class ProviderFtx extends lib_1.ProviderCommon {
             return success;
         });
     }
-    listenUserEvents() {
+    attachStreamAccount() {
         throw new Error('Method not implemented.');
     }
     __getAllOrdersRequest(baseAsset, quoteAsset, status, daysRange = 365) {

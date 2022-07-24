@@ -5,4 +5,5 @@ export enum CandleChartInterval {
     ONE_HOUR = '3600',
     FOUR_HOURS = '14400',
     ONE_DAY = '86400',
+    ONE_WEEK = '604800',
 }
