@@ -1128,10 +1128,10 @@ cache-base@^1.0.1:
     union-value "^1.0.0"
     unset-value "^1.0.0"
 
-caeb-types@^1.0.8:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/caeb-types/-/caeb-types-1.0.8.tgz#11eb00489f1d567193777a7b712efca9b2f6f2f5"
-  integrity sha512-5QphxhkIinxFs4T/yijY9SfgjCdYJQIWV5AYDIR+/9DHwQ6NSPB0Gt+aDJiXE8lJTfZB3JgdBSYSHAocCT/3dQ==
+caeb-types@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/caeb-types/-/caeb-types-1.0.10.tgz#7cbdec36bfd095a3373cbdaf1b185f310767162a"
+  integrity sha512-28oLpRHWRrVWLg27xFkgIlnE1dEsnDGo30R5Y/L27w8xqapdZFsznO4aIfafr1DsIesBItaoZWjaH9cVhDk3mg==
 
 call-bind@^1.0.0:
   version "1.0.2"
