@@ -27,4 +27,5 @@ var OrderType;
     OrderType['TAKE_PROFIT_MARKET'] = 'TAKE_PROFIT_MARKET';
     OrderType['TAKE_PROFIT_LIMIT'] = 'TAKE_PROFIT_LIMIT';
     OrderType['TRAILING_STOP_MARKET'] = 'TRAILING_STOP_MARKET';
+    OrderType['TAKE_PROFIT'] = 'TAKE_PROFIT';
 })((OrderType = exports.OrderType || (exports.OrderType = {})));

@@ -51,16 +51,16 @@ class ProviderCommon extends events_1.default {
             { type: 'WARNING', ratio: 0.75, waitTimeMS: 20000 },
             { type: 'CAUTION', ratio: 0.5, waitTimeMS: 10000 },
         ];
-        this.log = logger_1.createLogger(this.name.toUpperCase());
+        this.log = (0, logger_1.createLogger)(this.name.toUpperCase());
     }
     getVolatility(candles) {
         let low = 0;
         let high = 0;
         candles.forEach(candle => {
-            low = numbers_1.nz(Math.min(low, candle.low), candle.low) || candle.low;
-            high = numbers_1.nz(Math.max(high, candle.high), candle.high) || candle.high;
+            low = (0, numbers_1.nz)(Math.min(low, candle.low), candle.low) || candle.low;
+            high = (0, numbers_1.nz)(Math.max(high, candle.high), candle.high) || candle.high;
         });
-        return [low, high, numbers_1.getVariation(low, high)];
+        return [low, high, (0, numbers_1.getVariation)(low, high)];
     }
     getApiRatioLimits() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -77,7 +77,7 @@ class ProviderCommon extends events_1.default {
                     this.log.warn(
                         `[API LIMIT] ${limit.type} Take a break (${limit.waitTimeMS}ms) to avoid IP ban : ${spotLimit} / ${this.weightLimitPerMinute}`,
                     );
-                    yield timeout_1.timeout(limit.waitTimeMS);
+                    yield (0, timeout_1.timeout)(limit.waitTimeMS);
                     continue;
                 }
             }

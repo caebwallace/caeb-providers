@@ -1,38 +1,4 @@
 'use strict';
-var __createBinding =
-    (this && this.__createBinding) ||
-    (Object.create
-        ? function (o, m, k, k2) {
-              if (k2 === undefined) k2 = k;
-              Object.defineProperty(o, k2, {
-                  enumerable: true,
-                  get: function () {
-                      return m[k];
-                  },
-              });
-          }
-        : function (o, m, k, k2) {
-              if (k2 === undefined) k2 = k;
-              o[k2] = m[k];
-          });
-var __setModuleDefault =
-    (this && this.__setModuleDefault) ||
-    (Object.create
-        ? function (o, v) {
-              Object.defineProperty(o, 'default', { enumerable: true, value: v });
-          }
-        : function (o, v) {
-              o['default'] = v;
-          });
-var __importStar =
-    (this && this.__importStar) ||
-    function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k in mod) if (k !== 'default' && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-        __setModuleDefault(result, mod);
-        return result;
-    };
 var __awaiter =
     (this && this.__awaiter) ||
     function (thisArg, _arguments, P, generator) {
@@ -64,9 +30,14 @@ var __awaiter =
             step((generator = generator.apply(thisArg, _arguments || [])).next());
         });
     };
+var __importDefault =
+    (this && this.__importDefault) ||
+    function (mod) {
+        return mod && mod.__esModule ? mod : { default: mod };
+    };
 Object.defineProperty(exports, '__esModule', { value: true });
 exports.ProviderBinance = void 0;
-const binance_api_node_1 = __importStar(require('binance-api-node'));
+const binance_api_node_1 = __importDefault(require('binance-api-node'));
 const utils_1 = require('./utils');
 const errors_1 = require('../../../utils/errors');
 const numbers_1 = require('../../../utils/numbers/numbers');
@@ -93,8 +64,8 @@ class ProviderBinance extends lib_1.ProviderCommon {
         if (!props.httpBase && props.testnet) {
             this.httpBase = this.httpBaseTestnet;
         }
-        this.log = logger_1.createLogger(this.name.toUpperCase());
-        this.client = binance_api_node_1.default({
+        this.log = (0, logger_1.createLogger)(this.name.toUpperCase());
+        this.client = (0, binance_api_node_1.default)({
             apiKey: this.apiKey,
             apiSecret: this.apiSecret,
             httpBase: this.httpBase,
@@ -109,7 +80,7 @@ class ProviderBinance extends lib_1.ProviderCommon {
                 return this.cacheSymbols;
             }
             const { symbols, rateLimits } = yield this.client.exchangeInfo();
-            this.cacheSymbols = symbols.map(symbol => utils_1.formatTickerInfo(symbol));
+            this.cacheSymbols = symbols.map(symbol => (0, utils_1.formatTickerInfo)(symbol));
             this.cacheSymbolsLast = Date.now();
             return this.cacheSymbols;
         });
@@ -126,9 +97,50 @@ class ProviderBinance extends lib_1.ProviderCommon {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.respectApiRatioLimits();
             const symbol = this.formatSymbol(baseAsset, quoteAsset);
-            const interval = binance_api_node_1.CandleChartInterval[intervalType];
-            const candles = yield this.client.candles({ symbol, interval, limit: opts.limit });
-            return candles.map(candle => utils_1.formatCandle(candle));
+            let intervalResolution;
+            switch (intervalType) {
+                case 'ONE_MINUTE':
+                    intervalResolution = '1m';
+                    break;
+                case 'THREE_MINUTES':
+                    intervalResolution = '3m';
+                    break;
+                case 'FIVE_MINUTES':
+                    intervalResolution = '5m';
+                    break;
+                case 'FIFTEEN_MINUTES':
+                    intervalResolution = '15m';
+                    break;
+                case 'THIRTY_MINUTES':
+                    intervalResolution = '30m';
+                    break;
+                case 'ONE_HOUR':
+                    intervalResolution = '1h';
+                    break;
+                case 'TWO_HOURS':
+                    intervalResolution = '2h';
+                    break;
+                case 'FOUR_HOURS':
+                    intervalResolution = '4h';
+                    break;
+                case 'SIX_HOURS':
+                    intervalResolution = '6h';
+                    break;
+                case 'EIGHT_HOURS':
+                    intervalResolution = '8h';
+                    break;
+                case 'TWELVE_HOURS':
+                    intervalResolution = '12h';
+                    break;
+                case 'ONE_DAY':
+                    intervalResolution = '1d';
+                    break;
+                case 'ONE_WEEK':
+                    intervalResolution = '1w';
+                    break;
+            }
+            const candles = yield this.client.candles({ symbol, interval: intervalResolution, limit: opts.limit });
+            return candles.map(candle => (0, utils_1.formatCandle)(candle));
         });
     }
     getPrice(baseAsset, quoteAsset) {
@@ -146,7 +158,7 @@ class ProviderBinance extends lib_1.ProviderCommon {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.respectApiRatioLimits();
             const { balances } = yield this.client.accountInfo({ useServerTime: true });
-            return utils_1.formatBalances(balances);
+            return (0, utils_1.formatBalances)(balances);
         });
     }
     getAssetBalance(asset) {
@@ -168,7 +180,7 @@ class ProviderBinance extends lib_1.ProviderCommon {
             if (orderId) props.orderId = orderId;
             if (this.recvWindow) props.recvWindow = this.recvWindow;
             const orders = yield this.client.allOrders(props);
-            return orders.map(order => utils_1.formatQueryOrder(order, baseAsset, quoteAsset));
+            return orders.map(order => (0, utils_1.formatQueryOrder)(order, baseAsset, quoteAsset));
         });
     }
     getActiveOrders(baseAsset, quoteAsset) {
@@ -176,14 +188,14 @@ class ProviderBinance extends lib_1.ProviderCommon {
             yield this.respectApiRatioLimits();
             const symbol = this.formatSymbol(baseAsset, quoteAsset);
             const orders = yield this.client.openOrders({ symbol });
-            return orders.map(order => utils_1.formatQueryOrder(order, baseAsset, quoteAsset));
+            return orders.map(order => (0, utils_1.formatQueryOrder)(order, baseAsset, quoteAsset));
         });
     }
     createOrderLimit(side, quantity, price, baseAsset, quoteAsset) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.respectApiRatioLimits();
             const symbol = this.formatSymbol(baseAsset, quoteAsset);
-            const order = utils_1.formatNewOrder(
+            const order = (0, utils_1.formatNewOrder)(
                 yield this.client.order({
                     symbol,
                     side,
@@ -210,7 +222,7 @@ class ProviderBinance extends lib_1.ProviderCommon {
             this.log.debug('Cancel all Open Orders...');
             try {
                 const orders = yield this.client.cancelOpenOrders({ symbol });
-                return orders.map(order => utils_1.formatCanceledOrder(order));
+                return orders.map(order => (0, utils_1.formatCanceledOrder)(order));
             } catch (err) {
                 this.log.error(`Not able to close OpenOrders : [${err.code}] ${err.message}`);
                 return [];
@@ -224,7 +236,7 @@ class ProviderBinance extends lib_1.ProviderCommon {
                     if (msg.eventType && msg.eventType === 'executionReport') {
                         const symbols = yield this.getExchangeInfo();
                         const { baseAsset, quoteAsset } = symbols.find(s => this.formatSymbol(s.baseAsset, s.quoteAsset) === msg.symbol);
-                        this.emit('order', utils_1.formatWsOrder(msg, baseAsset, quoteAsset));
+                        this.emit('order', (0, utils_1.formatWsOrder)(msg, baseAsset, quoteAsset));
                     } else {
                         this.log.trace(msg);
                     }
@@ -238,18 +250,18 @@ class ProviderBinance extends lib_1.ProviderCommon {
             const info = yield this.client.getInfo();
             const limits = {
                 spot: {
-                    usedWeight1m: numbers_1.roundToCeil(info === null || info === void 0 ? void 0 : info.spot.usedWeight1m, 0),
-                    orderCount10s: numbers_1.roundToCeil(info === null || info === void 0 ? void 0 : info.spot.orderCount10s, 0),
-                    orderCount1m: numbers_1.roundToCeil(info === null || info === void 0 ? void 0 : info.spot.orderCount1m, 0),
-                    orderCount1h: numbers_1.roundToCeil(info === null || info === void 0 ? void 0 : info.spot.orderCount1h, 0),
-                    orderCount1d: numbers_1.roundToCeil(info === null || info === void 0 ? void 0 : info.spot.orderCount1d, 0),
+                    usedWeight1m: (0, numbers_1.roundToCeil)(info === null || info === void 0 ? void 0 : info.spot.usedWeight1m, 0),
+                    orderCount10s: (0, numbers_1.roundToCeil)(info === null || info === void 0 ? void 0 : info.spot.orderCount10s, 0),
+                    orderCount1m: (0, numbers_1.roundToCeil)(info === null || info === void 0 ? void 0 : info.spot.orderCount1m, 0),
+                    orderCount1h: (0, numbers_1.roundToCeil)(info === null || info === void 0 ? void 0 : info.spot.orderCount1h, 0),
+                    orderCount1d: (0, numbers_1.roundToCeil)(info === null || info === void 0 ? void 0 : info.spot.orderCount1d, 0),
                 },
                 futures: {
-                    usedWeight1m: numbers_1.roundToCeil(info === null || info === void 0 ? void 0 : info.futures.usedWeight1m, 0),
-                    orderCount10s: numbers_1.roundToCeil(info === null || info === void 0 ? void 0 : info.futures.orderCount10s, 0),
-                    orderCount1m: numbers_1.roundToCeil(info === null || info === void 0 ? void 0 : info.futures.orderCount1m, 0),
-                    orderCount1h: numbers_1.roundToCeil(info === null || info === void 0 ? void 0 : info.futures.orderCount1h, 0),
-                    orderCount1d: numbers_1.roundToCeil(info === null || info === void 0 ? void 0 : info.futures.orderCount1d, 0),
+                    usedWeight1m: (0, numbers_1.roundToCeil)(info === null || info === void 0 ? void 0 : info.futures.usedWeight1m, 0),
+                    orderCount10s: (0, numbers_1.roundToCeil)(info === null || info === void 0 ? void 0 : info.futures.orderCount10s, 0),
+                    orderCount1m: (0, numbers_1.roundToCeil)(info === null || info === void 0 ? void 0 : info.futures.orderCount1m, 0),
+                    orderCount1h: (0, numbers_1.roundToCeil)(info === null || info === void 0 ? void 0 : info.futures.orderCount1h, 0),
+                    orderCount1d: (0, numbers_1.roundToCeil)(info === null || info === void 0 ? void 0 : info.futures.orderCount1d, 0),
                 },
             };
             return limits;

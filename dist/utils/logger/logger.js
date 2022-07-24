@@ -14,7 +14,7 @@ const createLogger = name => {
         }
         method.apply(this, args);
     }
-    return pino_1.default({
+    return (0, pino_1.default)({
         name,
         level: 'trace',
         hooks: { logMethod },

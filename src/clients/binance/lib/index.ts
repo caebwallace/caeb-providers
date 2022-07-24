@@ -199,8 +199,52 @@ export class ProviderBinance extends ProviderCommon implements IProvider {
     ): Promise<ICandle[]> {
         await this.respectApiRatioLimits();
         const symbol = this.formatSymbol(baseAsset, quoteAsset);
-        const interval = CandleChartInterval[intervalType];
-        const candles = await this.client.candles({ symbol, interval, limit: opts.limit });
+
+        // Build interval (dummy method for yet, should be smarter, but not have time yet)
+        let intervalResolution: CandleChartInterval;
+        switch (intervalType) {
+            case 'ONE_MINUTE':
+                intervalResolution = CandleChartInterval.ONE_MINUTE;
+                break;
+            case 'THREE_MINUTES':
+                intervalResolution = CandleChartInterval.THREE_MINUTES;
+                break;
+            case 'FIVE_MINUTES':
+                intervalResolution = CandleChartInterval.FIVE_MINUTES;
+                break;
+            case 'FIFTEEN_MINUTES':
+                intervalResolution = CandleChartInterval.FIFTEEN_MINUTES;
+                break;
+            case 'THIRTY_MINUTES':
+                intervalResolution = CandleChartInterval.THIRTY_MINUTES;
+                break;
+            case 'ONE_HOUR':
+                intervalResolution = CandleChartInterval.ONE_HOUR;
+                break;
+            case 'TWO_HOURS':
+                intervalResolution = CandleChartInterval.TWO_HOURS;
+                break;
+            case 'FOUR_HOURS':
+                intervalResolution = CandleChartInterval.FOUR_HOURS;
+                break;
+            case 'SIX_HOURS':
+                intervalResolution = CandleChartInterval.SIX_HOURS;
+                break;
+            case 'EIGHT_HOURS':
+                intervalResolution = CandleChartInterval.EIGHT_HOURS;
+                break;
+            case 'TWELVE_HOURS':
+                intervalResolution = CandleChartInterval.TWELVE_HOURS;
+                break;
+            case 'ONE_DAY':
+                intervalResolution = CandleChartInterval.ONE_DAY;
+                break;
+            case 'ONE_WEEK':
+                intervalResolution = CandleChartInterval.ONE_WEEK;
+                break;
+        }
+
+        const candles = await this.client.candles({ symbol, interval: intervalResolution, limit: opts.limit });
         return candles.map(candle => formatCandle(candle));
     }
 

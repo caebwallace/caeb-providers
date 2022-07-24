@@ -10,10 +10,10 @@ const formatCanceledOrder = order => {
         side: order.side,
         orderId: order.orderId,
         clientOrderId: order.clientOrderId,
-        price: numbers_1.nz(parseFloat(order.price), 0),
-        origQty: numbers_1.nz(parseFloat(order.origQty), 0),
-        executedQty: numbers_1.nz(parseFloat(order.executedQty), 0),
-        cummulativeQuoteQty: numbers_1.nz(parseFloat(order.cummulativeQuoteQty), 0),
+        price: (0, numbers_1.nz)(parseFloat(order.price), 0),
+        origQty: (0, numbers_1.nz)(parseFloat(order.origQty), 0),
+        executedQty: (0, numbers_1.nz)(parseFloat(order.executedQty), 0),
+        cummulativeQuoteQty: (0, numbers_1.nz)(parseFloat(order.cummulativeQuoteQty), 0),
         createdAt: new Date(),
     };
     return intermediate;

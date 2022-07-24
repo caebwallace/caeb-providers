@@ -50,6 +50,7 @@ export enum OrderType {
     'TAKE_PROFIT_MARKET' = 'TAKE_PROFIT_MARKET',
     'TAKE_PROFIT_LIMIT' = 'TAKE_PROFIT_LIMIT',
     'TRAILING_STOP_MARKET' = 'TRAILING_STOP_MARKET',
+    'TAKE_PROFIT' = 'TAKE_PROFIT',
 }
 
 export type TOrderSide = keyof typeof OrderSide;

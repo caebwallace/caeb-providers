@@ -55,7 +55,7 @@ class ProviderFtx extends lib_1.ProviderCommon {
         if (props && props.apiKey) this.apiKey = props.apiKey;
         if (props && props.apiSecret) this.apiSecret = props.apiSecret;
         if (props && props.subAccountName) this.subAccountName = props.subAccountName;
-        this.log = logger_1.createLogger(this.name.toUpperCase());
+        this.log = (0, logger_1.createLogger)(this.name.toUpperCase());
         this.client = new ftx_api_1.RestClient(this.apiKey, this.apiSecret, {
             subAccountName: this.subAccountName,
         });
@@ -73,7 +73,7 @@ class ProviderFtx extends lib_1.ProviderCommon {
             }
             yield this.respectApiRatioLimits();
             const { result: symbols } = yield this.client.getMarkets();
-            this.cacheSymbols = symbols.filter(s => s.type === 'spot').map(symbol => formatTickerInfo_1.formatTickerInfo(symbol));
+            this.cacheSymbols = symbols.filter(s => s.type === 'spot').map(symbol => (0, formatTickerInfo_1.formatTickerInfo)(symbol));
             this.cacheSymbolsLast = Date.now();
             return this.cacheSymbols;
         });
@@ -99,17 +99,43 @@ class ProviderFtx extends lib_1.ProviderCommon {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.respectApiRatioLimits();
             const symbol = this.formatSymbol(baseAsset, quoteAsset);
-            const interval = CandleChartInterval_1.CandleChartInterval[intervalType];
+            let intervalResolution;
+            switch (intervalType) {
+                case 'ONE_MINUTE':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.ONE_MINUTE;
+                    break;
+                case 'FIVE_MINUTES':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.FIVE_MINUTES;
+                    break;
+                case 'FIFTEEN_MINUTES':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.FIFTEEN_MINUTES;
+                    break;
+                case 'THIRTY_MINUTES':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.THIRTY_MINUTES;
+                    break;
+                case 'ONE_HOUR':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.ONE_HOUR;
+                    break;
+                case 'FOUR_HOURS':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.FOUR_HOURS;
+                    break;
+                case 'ONE_DAY':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.ONE_DAY;
+                    break;
+                case 'ONE_WEEK':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.ONE_WEEK;
+                    break;
+            }
             const intervalMs = caeb_types_1.ICandleChartIntervalInSeconds[intervalType] * 1000;
-            const startAt = numbers_1.roundToFloor((Date.now() - intervalMs * opts.limit) / 1000, 0);
-            const endAt = numbers_1.roundToFloor(Date.now() / 1000, 0);
+            const startAt = (0, numbers_1.roundToFloor)((Date.now() - intervalMs * opts.limit) / 1000, 0);
+            const endAt = (0, numbers_1.roundToFloor)(Date.now() / 1000, 0);
             const { result: candles } = yield this.client.getHistoricalPrices({
                 market_name: symbol,
-                resolution: interval,
+                resolution: intervalResolution,
                 start_time: startAt,
                 end_time: endAt,
             });
-            return candles.map(candle => formatCandle_1.formatCandle(candle, intervalMs));
+            return candles.map(candle => (0, formatCandle_1.formatCandle)(candle, intervalMs));
         });
     }
     formatSymbol(baseAsset, quoteAsset) {
@@ -119,7 +145,7 @@ class ProviderFtx extends lib_1.ProviderCommon {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.respectApiRatioLimits();
             const { result: balances } = yield this.client.getBalances();
-            return formatBalances_1.formatBalances(balances || []);
+            return (0, formatBalances_1.formatBalances)(balances || []);
         });
     }
     getAssetBalance(asset) {
@@ -155,7 +181,7 @@ class ProviderFtx extends lib_1.ProviderCommon {
                 postOnly: true,
             });
             const tickerInfo = yield this.getTickerInfo(baseAsset, quoteAsset);
-            return formatOrder_1.formatOrder(Object.assign(Object.assign({}, order), { baseAsset, quoteAsset }), tickerInfo);
+            return (0, formatOrder_1.formatOrder)(Object.assign(Object.assign({}, order), { baseAsset, quoteAsset }), tickerInfo);
         });
     }
     createOrderMarket(props) {
@@ -179,8 +205,8 @@ class ProviderFtx extends lib_1.ProviderCommon {
             yield this.respectApiRatioLimits();
             const orders = [];
             const dailyMs = 86400 * 1000;
-            const startAt = numbers_1.roundToFloor((Date.now() - dailyMs * daysRange) / 1000, 0);
-            const endAt = numbers_1.roundToFloor(Date.now() / 1000, 0);
+            const startAt = (0, numbers_1.roundToFloor)((Date.now() - dailyMs * daysRange) / 1000, 0);
+            const endAt = (0, numbers_1.roundToFloor)(Date.now() / 1000, 0);
             if (!this.cacheSymbols || !this.cacheSymbols.length) {
                 yield this.getExchangeInfo();
             }
@@ -195,7 +221,7 @@ class ProviderFtx extends lib_1.ProviderCommon {
                 for (const item of result) {
                     const [marketBaseAsset, marketQuoteAsset] = item.market.split('/');
                     const tickerInfo = yield this.getTickerInfo(marketBaseAsset, marketQuoteAsset);
-                    orders.push(formatOrder_1.formatOrder(Object.assign(Object.assign({}, item), { marketBaseAsset, marketQuoteAsset }), tickerInfo));
+                    orders.push((0, formatOrder_1.formatOrder)(Object.assign(Object.assign({}, item), { marketBaseAsset, marketQuoteAsset }), tickerInfo));
                 }
             }
             return orders;

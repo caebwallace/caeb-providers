@@ -6,8 +6,8 @@ const formatBalances = (rawBalances, hideSmallBalances = false) => {
     const balances = rawBalances.map(b => {
         return {
             asset: b.asset,
-            free: numbers_1.nz(parseFloat(b.free), 0),
-            locked: numbers_1.nz(parseFloat(b.locked), 0),
+            free: (0, numbers_1.nz)(parseFloat(b.free), 0),
+            locked: (0, numbers_1.nz)(parseFloat(b.locked), 0),
         };
     });
     return hideSmallBalances ? balances.filter(a => a.free || a.locked) : balances;

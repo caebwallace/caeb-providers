@@ -162,7 +162,35 @@ export class ProviderFtx extends ProviderCommon implements IProvider {
 
         // Init symbol and interval type
         const symbol = this.formatSymbol(baseAsset, quoteAsset);
-        const interval = CandleChartInterval[intervalType] as unknown as number;
+
+        // Build interval (dummy method for yet, should be smarter, but not have time yet)
+        let intervalResolution: CandleChartInterval;
+        switch (intervalType) {
+            case 'ONE_MINUTE':
+                intervalResolution = CandleChartInterval.ONE_MINUTE;
+                break;
+            case 'FIVE_MINUTES':
+                intervalResolution = CandleChartInterval.FIVE_MINUTES;
+                break;
+            case 'FIFTEEN_MINUTES':
+                intervalResolution = CandleChartInterval.FIFTEEN_MINUTES;
+                break;
+            case 'THIRTY_MINUTES':
+                intervalResolution = CandleChartInterval.THIRTY_MINUTES;
+                break;
+            case 'ONE_HOUR':
+                intervalResolution = CandleChartInterval.ONE_HOUR;
+                break;
+            case 'FOUR_HOURS':
+                intervalResolution = CandleChartInterval.FOUR_HOURS;
+                break;
+            case 'ONE_DAY':
+                intervalResolution = CandleChartInterval.ONE_DAY;
+                break;
+            case 'ONE_WEEK':
+                intervalResolution = CandleChartInterval.ONE_WEEK;
+                break;
+        }
 
         // Calculate limits
         const intervalMs = ICandleChartIntervalInSeconds[intervalType] * 1000;
@@ -172,7 +200,7 @@ export class ProviderFtx extends ProviderCommon implements IProvider {
         // Get klines and format
         const { result: candles } = await this.client.getHistoricalPrices({
             market_name: symbol,
-            resolution: interval,
+            resolution: intervalResolution as unknown as number,
             start_time: startAt,
             end_time: endAt,
         });

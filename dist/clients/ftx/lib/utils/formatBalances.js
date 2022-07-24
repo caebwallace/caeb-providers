@@ -7,13 +7,13 @@ const formatBalances = (rawBalances, hideSmallBalances = false) => {
     rawBalances.forEach(b => {
         const balance = balances.find(n => n.asset === b.coin);
         if (balance) {
-            balance.free += numbers_1.nz(b.free, 0);
-            balance.locked += numbers_1.nz(b.total - b.free, 0);
+            balance.free += (0, numbers_1.nz)(b.free, 0);
+            balance.locked += (0, numbers_1.nz)(b.total - b.free, 0);
         } else {
             balances.push({
                 asset: b.coin,
-                free: numbers_1.nz(b.free, 0),
-                locked: numbers_1.nz(b.total - b.free, 0),
+                free: (0, numbers_1.nz)(b.free, 0),
+                locked: (0, numbers_1.nz)(b.total - b.free, 0),
             });
         }
     });

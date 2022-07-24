@@ -90,7 +90,7 @@ class ProviderKucoin extends lib_1.ProviderCommon {
         if (!props.httpBase && props.testnet) {
             this.httpBase = this.httpBaseTestnet;
         }
-        this.log = logger_1.createLogger(this.name.toUpperCase());
+        this.log = (0, logger_1.createLogger)(this.name.toUpperCase());
         this.client.init({
             baseUrl: this.httpBase,
             apiAuth: {
@@ -133,7 +133,7 @@ class ProviderKucoin extends lib_1.ProviderCommon {
             }
             yield this.respectApiRatioLimits();
             const { data: symbols } = yield this.client.rest.Market.Symbols.getSymbolsList();
-            this.cacheSymbols = symbols.map(symbol => formatTickerInfo_1.formatTickerInfo(symbol));
+            this.cacheSymbols = symbols.map(symbol => (0, formatTickerInfo_1.formatTickerInfo)(symbol));
             this.cacheSymbolsLast = Date.now();
             return this.cacheSymbols;
         });
@@ -160,32 +160,73 @@ class ProviderKucoin extends lib_1.ProviderCommon {
         return __awaiter(this, void 0, void 0, function* () {
             const candleResults = [];
             const symbol = this.formatSymbol(baseAsset, quoteAsset);
-            const interval = CandleChartInterval_1.CandleChartInterval[intervalType];
-            const limit = Math.min(numbers_1.nz(opts.limit, this.historyLimitMax), this.historyLimitMax);
+            let intervalResolution;
+            switch (intervalType) {
+                case 'ONE_MINUTE':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.ONE_MINUTE;
+                    break;
+                case 'THREE_MINUTES':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.THREE_MINUTES;
+                    break;
+                case 'FIVE_MINUTES':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.FIVE_MINUTES;
+                    break;
+                case 'FIFTEEN_MINUTES':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.FIFTEEN_MINUTES;
+                    break;
+                case 'THIRTY_MINUTES':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.THIRTY_MINUTES;
+                    break;
+                case 'ONE_HOUR':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.ONE_HOUR;
+                    break;
+                case 'TWO_HOURS':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.TWO_HOURS;
+                    break;
+                case 'FOUR_HOURS':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.FOUR_HOURS;
+                    break;
+                case 'SIX_HOURS':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.SIX_HOURS;
+                    break;
+                case 'EIGHT_HOURS':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.EIGHT_HOURS;
+                    break;
+                case 'TWELVE_HOURS':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.TWELVE_HOURS;
+                    break;
+                case 'ONE_DAY':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.ONE_DAY;
+                    break;
+                case 'ONE_WEEK':
+                    intervalResolution = CandleChartInterval_1.CandleChartInterval.ONE_WEEK;
+                    break;
+            }
+            const limit = Math.min((0, numbers_1.nz)(opts.limit, this.historyLimitMax), this.historyLimitMax);
             const intervalMs = caeb_types_1.ICandleChartIntervalInSeconds[intervalType] * 1000;
             const startAt =
                 (_b = Math.floor(((_a = opts.startDate) === null || _a === void 0 ? void 0 : _a.valueOf()) / 1000)) !== null && _b !== void 0
                     ? _b
-                    : numbers_1.roundToFloor((Date.now() - intervalMs * limit) / 1000, 0);
+                    : (0, numbers_1.roundToFloor)((Date.now() - intervalMs * limit) / 1000, 0);
             const endAt =
                 (_d = Math.floor(((_c = opts.endDate) === null || _c === void 0 ? void 0 : _c.valueOf()) / 1000)) !== null && _d !== void 0
                     ? _d
-                    : numbers_1.roundToFloor(Date.now() / 1000, 0);
+                    : (0, numbers_1.roundToFloor)(Date.now() / 1000, 0);
             const numCandles = (endAt - startAt) / caeb_types_1.ICandleChartIntervalInSeconds[intervalType];
             const numRequest = Math.ceil(numCandles / this.historyLimitMax);
-            this.log.debug('getHistory', { symbol, interval, startAt, endAt, numCandles, numRequest });
+            this.log.debug('getHistory', { symbol, interval: intervalResolution, startAt, endAt, numCandles, numRequest });
             for (let _startAt = startAt; _startAt < endAt; _startAt += caeb_types_1.ICandleChartIntervalInSeconds[intervalType] * this.historyLimitMax) {
                 yield this.respectApiRatioLimits();
                 const _endAt = _startAt + caeb_types_1.ICandleChartIntervalInSeconds[intervalType] * (this.historyLimitMax - 1);
                 this.log.debug('Fetch candles :', { symbol, startAt: _startAt, endAt: _endAt, limit: this.historyLimitMax });
-                const { data: candles } = yield this.client.rest.Market.Histories.getMarketCandles(symbol, interval, {
+                const { data: candles } = yield this.client.rest.Market.Histories.getMarketCandles(symbol, intervalResolution, {
                     startAt: _startAt,
                     endAt: _endAt,
                     limit: this.historyLimitMax,
                 });
                 candleResults.push.apply(
                     candleResults,
-                    candles === null || candles === void 0 ? void 0 : candles.map(candle => formatCandle_1.formatCandle(candle, intervalMs)),
+                    candles === null || candles === void 0 ? void 0 : candles.map(candle => (0, formatCandle_1.formatCandle)(candle, intervalMs)),
                 );
             }
             return candleResults.sort((a, b) => (a.openTime > b.openTime ? 1 : -1));
@@ -198,7 +239,7 @@ class ProviderKucoin extends lib_1.ProviderCommon {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.respectApiRatioLimits();
             const { data: balances } = yield this.client.rest.User.Account.getAccountsList();
-            return formatBalances_1.formatBalances(balances || []);
+            return (0, formatBalances_1.formatBalances)(balances || []);
         });
     }
     getAssetBalance(asset) {
@@ -214,7 +255,7 @@ class ProviderKucoin extends lib_1.ProviderCommon {
             const order = req === null || req === void 0 ? void 0 : req.data;
             const [baseAsset, quoteAsset] = order === null || order === void 0 ? void 0 : order.symbol.split('-');
             const tickerInfo = yield this.getTickerInfo(baseAsset, quoteAsset);
-            return formatOrder_1.formatOrder(Object.assign(Object.assign({}, order), { baseAsset, quoteAsset }), tickerInfo);
+            return (0, formatOrder_1.formatOrder)(Object.assign(Object.assign({}, order), { baseAsset, quoteAsset }), tickerInfo);
         });
     }
     getAllOrdersForPairs(pairs, status, daysRange) {
@@ -249,7 +290,7 @@ class ProviderKucoin extends lib_1.ProviderCommon {
             }
             for (const orderId of data.cancelledOrderIds) {
                 const { data: item } = yield this.client.rest.Trade.Orders.getOrderByID(orderId);
-                orders.push(formatOrder_1.formatOrder(Object.assign(Object.assign({}, item), { baseAsset, quoteAsset }), tickerInfo));
+                orders.push((0, formatOrder_1.formatOrder)(Object.assign(Object.assign({}, item), { baseAsset, quoteAsset }), tickerInfo));
             }
             return orders;
         });
@@ -326,22 +367,22 @@ class ProviderKucoin extends lib_1.ProviderCommon {
             side: (_a = data === null || data === void 0 ? void 0 : data.side) === null || _a === void 0 ? void 0 : _a.toUpperCase(),
             type: (_b = data === null || data === void 0 ? void 0 : data.orderType) === null || _b === void 0 ? void 0 : _b.toUpperCase(),
             origQty:
-                (_c = numbers_1.nz(parseFloat(data === null || data === void 0 ? void 0 : data.size), 0)) !== null && _c !== void 0
+                (_c = (0, numbers_1.nz)(parseFloat(data === null || data === void 0 ? void 0 : data.size), 0)) !== null && _c !== void 0
                     ? _c
-                    : numbers_1.nz(parseFloat(data === null || data === void 0 ? void 0 : data.filledSize), 0),
-            executedQty: numbers_1.nz(parseFloat(data === null || data === void 0 ? void 0 : data.filledSize), 0),
+                    : (0, numbers_1.nz)(parseFloat(data === null || data === void 0 ? void 0 : data.filledSize), 0),
+            executedQty: (0, numbers_1.nz)(parseFloat(data === null || data === void 0 ? void 0 : data.filledSize), 0),
             createdAt: new Date(parseInt(data === null || data === void 0 ? void 0 : data.orderTime, 10) / 1000000),
             updatedAt: new Date(parseInt(data === null || data === void 0 ? void 0 : data.ts, 10) / 1000000),
         };
         if (data === null || data === void 0 ? void 0 : data.matchPrice) {
-            order.price = Math.max(0, numbers_1.nz(parseFloat(data === null || data === void 0 ? void 0 : data.matchPrice), 0));
+            order.price = Math.max(0, (0, numbers_1.nz)(parseFloat(data === null || data === void 0 ? void 0 : data.matchPrice), 0));
         }
         if (data === null || data === void 0 ? void 0 : data.price) {
-            order.price = Math.max(0, numbers_1.nz(parseFloat(data === null || data === void 0 ? void 0 : data.price), 0));
+            order.price = Math.max(0, (0, numbers_1.nz)(parseFloat(data === null || data === void 0 ? void 0 : data.price), 0));
         }
         if (order.price > 0) {
-            order.origQuoteOrderQty = numbers_1.nz(order.price * order.origQty, 0);
-            order.cummulativeQuoteQty = numbers_1.nz(order.price * order.executedQty, 0);
+            order.origQuoteOrderQty = (0, numbers_1.nz)(order.price * order.origQty, 0);
+            order.cummulativeQuoteQty = (0, numbers_1.nz)(order.price * order.executedQty, 0);
         }
         switch (data === null || data === void 0 ? void 0 : data.type) {
             case 'open':
@@ -405,11 +446,11 @@ class ProviderKucoin extends lib_1.ProviderCommon {
             let startAt = Date.now() - dailyMs * daysLimit;
             let endAt = Date.now();
             const finalDate = startAt - dailyMs * daysRange;
-            const limit = p_limit_1.default(1);
+            const limit = (0, p_limit_1.default)(1);
             const input = [];
             while (endAt > finalDate) {
                 input.push(limit(() => this.__getAllOrdersRequest({ tradeType, symbol, status, endAt, startAt, baseAsset, quoteAsset })));
-                input.push(limit(() => timeout_1.timeout(334)));
+                input.push(limit(() => (0, timeout_1.timeout)(334)));
                 startAt -= dailyMs * daysLimit;
                 endAt -= dailyMs * daysLimit;
             }
@@ -443,7 +484,7 @@ class ProviderKucoin extends lib_1.ProviderCommon {
                 for (const item of items) {
                     const [baseAsset, quoteAsset] = item.symbol.split('-');
                     const tickerInfo = yield this.getTickerInfo(baseAsset, quoteAsset);
-                    orders.push(formatOrder_1.formatOrder(Object.assign(Object.assign({}, item), { baseAsset, quoteAsset }), tickerInfo));
+                    orders.push((0, formatOrder_1.formatOrder)(Object.assign(Object.assign({}, item), { baseAsset, quoteAsset }), tickerInfo));
                 }
             }
             return orders;
@@ -469,7 +510,7 @@ class ProviderKucoin extends lib_1.ProviderCommon {
                 for (const item of items) {
                     const [baseAsset, quoteAsset] = item.symbol.split('-');
                     const tickerInfo = yield this.getTickerInfo(baseAsset, quoteAsset);
-                    orders.push(formatOrder_1.formatOrder(Object.assign(Object.assign({}, item), { baseAsset, quoteAsset }), tickerInfo));
+                    orders.push((0, formatOrder_1.formatOrder)(Object.assign(Object.assign({}, item), { baseAsset, quoteAsset }), tickerInfo));
                 }
             }
             return orders;
@@ -493,7 +534,7 @@ class ProviderKucoin extends lib_1.ProviderCommon {
                 other = __rest(_a, ['totalNum', 'totalPage', 'items']);
             if (items) {
                 items.forEach(item => {
-                    orders.push(formatOrder_1.formatOrder(Object.assign(Object.assign({}, item), { baseAsset, quoteAsset }), tickerInfo));
+                    orders.push((0, formatOrder_1.formatOrder)(Object.assign(Object.assign({}, item), { baseAsset, quoteAsset }), tickerInfo));
                 });
             }
             return { orders, currentPage, pageSize, totalNum, totalPage };

@@ -7,13 +7,13 @@ const formatTickerInfo = asset => {
         baseAsset: asset.baseCurrency,
         quoteAsset: asset.quoteCurrency,
         status: asset.enabled ? 'TRADING' : 'LISTING',
-        pricePrecision: numbers_1.nz(numbers_1.countDecimals(parseFloat(asset.priceIncrement)), 8) || 8,
-        quotePrecision: numbers_1.nz(numbers_1.countDecimals(parseFloat(asset.quoteIncrement)), 8) || 8,
-        minPrice: numbers_1.nz(parseFloat(asset.baseMinSize), 0),
-        maxPrice: numbers_1.nz(parseFloat(asset.baseMaxSize), 0),
-        minQty: numbers_1.nz(parseFloat(asset.minProvideSize), 0),
-        stepSize: numbers_1.nz(parseFloat(asset.priceIncrement), 0),
-        minNotional: numbers_1.nz(parseFloat(asset.quoteMinSize), 0.1),
+        pricePrecision: (0, numbers_1.nz)((0, numbers_1.countDecimals)(parseFloat(asset.priceIncrement)), 8) || 8,
+        quotePrecision: (0, numbers_1.nz)((0, numbers_1.countDecimals)(parseFloat(asset.quoteIncrement)), 8) || 8,
+        minPrice: (0, numbers_1.nz)(parseFloat(asset.baseMinSize), 0),
+        maxPrice: (0, numbers_1.nz)(parseFloat(asset.baseMaxSize), 0),
+        minQty: (0, numbers_1.nz)(parseFloat(asset.minProvideSize), 0),
+        stepSize: (0, numbers_1.nz)(parseFloat(asset.priceIncrement), 0),
+        minNotional: (0, numbers_1.nz)(parseFloat(asset.quoteMinSize), 0.1),
     };
 };
 exports.formatTickerInfo = formatTickerInfo;

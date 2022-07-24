@@ -1,6 +1,6 @@
 {
     "name": "caeb-providers",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "description": "Providers CEX/DEX by Caeb Wallace",
     "main": "dist/index.js",
     "scripts": {
@@ -57,13 +57,12 @@
         "*.{js,css,md,ts,json}": "prettier --write"
     },
     "dependencies": {
-        "@terra-money/terra.js": "^1.8.8",
-        "binance-api-node": "^0.11.2",
-        "caeb-types": "^1.0.6",
+        "binance-api-node": "^0.11.40",
+        "caeb-types": "^1.0.8",
         "ftx-api": "^1.0.13",
         "kucoin-node-sdk": "^1.0.4",
         "kucoin-sdk": "^2.0.1",
-        "p-limit": "^2.3.0",
+        "p-limit": "^4.0.0",
         "pino": "^6.11.3",
         "pino-pretty": "^4.8.0",
         "typed-emitter": "^1.3.1"

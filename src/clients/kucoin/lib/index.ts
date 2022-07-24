@@ -289,7 +289,50 @@ export class ProviderKucoin extends ProviderCommon implements IProvider {
 
         // Init symbol and interval type
         const symbol = this.formatSymbol(baseAsset, quoteAsset);
-        const interval = CandleChartInterval[intervalType];
+
+        // Build interval (dummy method for yet, should be smarter, but not have time yet)
+        let intervalResolution: CandleChartInterval;
+        switch (intervalType) {
+            case 'ONE_MINUTE':
+                intervalResolution = CandleChartInterval.ONE_MINUTE;
+                break;
+            case 'THREE_MINUTES':
+                intervalResolution = CandleChartInterval.THREE_MINUTES;
+                break;
+            case 'FIVE_MINUTES':
+                intervalResolution = CandleChartInterval.FIVE_MINUTES;
+                break;
+            case 'FIFTEEN_MINUTES':
+                intervalResolution = CandleChartInterval.FIFTEEN_MINUTES;
+                break;
+            case 'THIRTY_MINUTES':
+                intervalResolution = CandleChartInterval.THIRTY_MINUTES;
+                break;
+            case 'ONE_HOUR':
+                intervalResolution = CandleChartInterval.ONE_HOUR;
+                break;
+            case 'TWO_HOURS':
+                intervalResolution = CandleChartInterval.TWO_HOURS;
+                break;
+            case 'FOUR_HOURS':
+                intervalResolution = CandleChartInterval.FOUR_HOURS;
+                break;
+            case 'SIX_HOURS':
+                intervalResolution = CandleChartInterval.SIX_HOURS;
+                break;
+            case 'EIGHT_HOURS':
+                intervalResolution = CandleChartInterval.EIGHT_HOURS;
+                break;
+            case 'TWELVE_HOURS':
+                intervalResolution = CandleChartInterval.TWELVE_HOURS;
+                break;
+            case 'ONE_DAY':
+                intervalResolution = CandleChartInterval.ONE_DAY;
+                break;
+            case 'ONE_WEEK':
+                intervalResolution = CandleChartInterval.ONE_WEEK;
+                break;
+        }
 
         // Defaults limit
         const limit = Math.min(nz(opts.limit, this.historyLimitMax), this.historyLimitMax);
@@ -302,7 +345,7 @@ export class ProviderKucoin extends ProviderCommon implements IProvider {
         // Build requests to respect API limitations
         const numCandles = (endAt - startAt) / ICandleChartIntervalInSeconds[intervalType];
         const numRequest = Math.ceil(numCandles / this.historyLimitMax);
-        this.log.debug('getHistory', { symbol, interval, startAt, endAt, numCandles, numRequest });
+        this.log.debug('getHistory', { symbol, interval: intervalResolution, startAt, endAt, numCandles, numRequest });
 
         // Fetch each group of klines
         for (let _startAt = startAt; _startAt < endAt; _startAt += ICandleChartIntervalInSeconds[intervalType] * this.historyLimitMax) {
@@ -311,7 +354,7 @@ export class ProviderKucoin extends ProviderCommon implements IProvider {
             const _endAt = _startAt + ICandleChartIntervalInSeconds[intervalType] * (this.historyLimitMax - 1);
 
             this.log.debug('Fetch candles :', { symbol, startAt: _startAt, endAt: _endAt, limit: this.historyLimitMax });
-            const { data: candles } = await this.client.rest.Market.Histories.getMarketCandles(symbol, interval, {
+            const { data: candles } = await this.client.rest.Market.Histories.getMarketCandles(symbol, intervalResolution, {
                 startAt: _startAt,
                 endAt: _endAt,
                 limit: this.historyLimitMax,

@@ -12,9 +12,9 @@ const formatWsOrder = (order, baseAsset, quoteAsset) => {
         side: order.side,
         orderId: (_a = order.orderId) === null || _a === void 0 ? void 0 : _a.toString(),
         clientOrderId: order.newClientOrderId,
-        price: numbers_1.nz(parseFloat(order.price), 0),
-        origQty: numbers_1.nz(parseFloat(order.quantity), 0),
-        cummulativeQuoteQty: numbers_1.nz(parseFloat(order.quantity) * parseFloat(order.price), 0),
+        price: (0, numbers_1.nz)(parseFloat(order.price), 0),
+        origQty: (0, numbers_1.nz)(parseFloat(order.quantity), 0),
+        cummulativeQuoteQty: (0, numbers_1.nz)(parseFloat(order.quantity) * parseFloat(order.price), 0),
         createdAt: new Date(order.creationTime),
         updatedAt: new Date(order.orderTime),
     };
