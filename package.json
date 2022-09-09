@@ -1,6 +1,6 @@
 {
     "name": "caeb-providers",
-    "version": "0.3.4",
+    "version": "0.3.5",
     "description": "Providers CEX/DEX by Caeb Wallace",
     "main": "dist/index.js",
     "scripts": {
@@ -9,7 +9,7 @@
         "build:clean:after": "rimraf ./dist/__mocks__",
         "build:compile": "tsc --project tsconfig.build.json --skipLibCheck",
         "build:watch": "tsc --watch",
-        "test": "jest --verbose",
+        "test": "jest --verbose --detectOpenHandles",
         "test:watch": "jest --verbose --watchAll --detectOpenHandles",
         "format": "prettier --write \"src/**/*.{ts,json}\"",
         "lint": "tslint -p tsconfig.json",
