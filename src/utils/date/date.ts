@@ -8,7 +8,7 @@
  * @example
  * floorCandleDate(moment('2020-10-07T17:42:15+02:00'), moment.duration('PT4H').valueOf());
  */
-export function floorCandleDate(date: number, windowInterval: number) {
+export function floorCandleDate(date: number, windowInterval: number): number {
     return date - (date % windowInterval) + 1;
 }
 
@@ -22,6 +22,6 @@ export function floorCandleDate(date: number, windowInterval: number) {
  * @example
  * ceilCandleDate(moment('2020-10-07T17:42:15+02:00'), moment.duration('PT4H').valueOf());
  */
-export function ceilCandleDate(date: number, windowInterval: number) {
+export function ceilCandleDate(date: number, windowInterval: number): number {
     return date + (windowInterval - (date % windowInterval));
 }

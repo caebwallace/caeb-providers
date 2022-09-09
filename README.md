@@ -22,17 +22,16 @@ npm i caeb-providers
 
 ## Providers supported
 
-[X] Binance
-[X] Kucoin
-[X] FTX
-[ ] Terra Luna (Next)
-[ ] Gate.io
-[ ] Ethereum
-[ ] Polygon / Matic
-[ ] Binance Smart Chain
-[ ] Avalanche
-[ ] Fantom Opera
-[ ] Celsius Network (Read Only)
+-   [x] Binance
+-   [x] Kucoin
+-   [x] FTX
+-   [ ] DyDx
+-   [ ] Gate.io
+-   [ ] Ethereum
+-   [ ] Polygon / Matic
+-   [ ] Binance Smart Chain
+-   [ ] Avalanche
+-   [ ] Fantom Opera
 
 ## Methods
 

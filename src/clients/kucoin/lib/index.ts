@@ -1,7 +1,7 @@
 const ClientKucoin = require('kucoin-node-sdk');
 
 import pLimit from 'p-limit';
-import { IBalance, ICandle, IOrder, IProvider, TOrderSide } from '../../common/interfaces';
+import { IBalance, ICandle, IOrder, IProvider, TOrderSide, TProviderTransferInnerType } from '../../common/interfaces';
 import { CandleChartInterval } from '../interfaces/CandleChartInterval';
 import { createLogger, Logger } from '../../../utils/logger/logger';
 import { IProviderKucoin } from '../interfaces/IProviderKucoin';
@@ -568,6 +568,51 @@ export class ProviderKucoin extends ProviderCommon implements IProvider {
     public async attachStreamTicker(baseAsset: string, quoteAsset: string) {
         const ticker = `${baseAsset}-${quoteAsset}`;
         return this.datafeed.subscribe(`/market/candles:${ticker}_1min`, this._onTickerStreamMessage.bind(this));
+    }
+
+    /**
+     * Transfer currencies between internal accounts (TRADE <-> MAIN).
+     *
+     * @param {string} clientOid - Transfer Order ID (eg UUID).
+     * @param {string} baseAsset - Currency (eg USDT).
+     * @param {number} amount - A positive number of currency to transfer.
+     * @param {keyof typeof TProviderTransferInnerType} transferType - The type of trasnfer (TRADE_FUNDING | FUNDING_TRADE).
+     */
+    public async innerTransfer(clientOid: string, baseAsset: string, amount: number, transferType: keyof typeof TProviderTransferInnerType): Promise<string> {
+        await this.respectApiRatioLimits();
+
+        // Set from and to account from the transferType
+        let from, to;
+        if (transferType === TProviderTransferInnerType.TRADE_FUNDING) {
+            from = 'trade';
+            to = 'main';
+        } else if (transferType === TProviderTransferInnerType.FUNDING_TRADE) {
+            from = 'main';
+            to = 'trade';
+        }
+
+        // Input errors
+        // -> account type is not available
+        if (!from || !to) {
+            throw new Error(`InnerTransfer type must be : ${JSON.stringify(Object.keys(TProviderTransferInnerType))}`);
+        }
+
+        // -> amount is negative
+        if (amount <= 0) {
+            throw new Error(`InnerTransfer 'amount' must be positive : ${amount}`);
+        }
+
+        // Send request
+        const { code, success, data } = await this.client.rest.User.Account.innerTransfer(clientOid, baseAsset, from, to, amount);
+
+        // Get the TxId
+        const txId = data?.orderId;
+
+        // All is OK
+        if (txId) return txId;
+
+        // Else throw the errorCode
+        throw new Error(`Error while innerTransfer : ${code}`);
     }
 
     ////////////////////////////////////////////////// PRIVATE METHODS ///////////

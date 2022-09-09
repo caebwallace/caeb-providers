@@ -80,6 +80,14 @@ describe('test client', () => {
                 expect(typeof balance.free).toBe('number');
                 expect(typeof balance.locked).toBe('number');
             });
+
+            it('provider.innerTransfer()', async () => {
+                const txId_TRADE_FUNDING = await provider.innerTransfer(`caeb-tp-${Date.now()}`, 'USDT', 1, 'TRADE_FUNDING');
+                expect(typeof txId_TRADE_FUNDING).toBe('string');
+
+                const txId_FUNDING_TRADE = await provider.innerTransfer(`caeb-tp-${Date.now()}`, 'USDT', 1, 'FUNDING_TRADE');
+                expect(typeof txId_FUNDING_TRADE).toBe('string');
+            });
         });
         describe('orders', () => {
             it('provider.getAllOrders()', async () => {

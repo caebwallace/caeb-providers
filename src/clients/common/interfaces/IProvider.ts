@@ -5,6 +5,11 @@ import { IBalance } from './IBalance';
 import { ICandle } from './ICandle';
 import { IOrder, IOrderMarketProps, OrderSide, TOrderSide } from './IOrder';
 
+export enum TProviderTransferInnerType {
+    FUNDING_TRADE = 'FUNDING_TRADE',
+    TRADE_FUNDING = 'TRADE_FUNDING',
+}
+
 export interface IProvider extends EventEmitter {
     id: string;
     name: string;
@@ -31,6 +36,7 @@ export interface IProvider extends EventEmitter {
     createOrderLimit(side: TOrderSide, quantity: number, price: number, baseAsset: string, quoteAsset: string): Promise<IOrder>;
     createOrderMarket(props: IOrderMarketProps): Promise<IOrder>;
     cancelOpenOrders(baseAsset: string, quoteAsset: string): Promise<IOrder[] | boolean>;
+    innerTransfer(clientOid: string, baseAsset: string, amount: number, transferType: keyof typeof TProviderTransferInnerType): Promise<string>;
     getApiRatioLimits(): Promise<any>;
     attachStreamAccount(): void;
     attachStreamTicker(baseAsset: string, quoteAsset: string): void;

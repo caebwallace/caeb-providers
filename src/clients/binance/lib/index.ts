@@ -4,7 +4,7 @@ import { formatBalances, formatCanceledOrder, formatCandle, formatNewOrder, form
 import { ErrorInvalidSymbol } from '../../../utils/errors';
 import { roundToCeil } from '../../../utils/numbers/numbers';
 import { createLogger, Logger } from '../../../utils/logger/logger';
-import { IBalance, ICandle, IOrder, IProvider } from '../../common/interfaces';
+import { IBalance, ICandle, IOrder, IProvider, TProviderTransferInnerType } from '../../common/interfaces';
 import { ProviderCommon } from '../../common/lib';
 import { IOrderMarketProps } from '../../common/interfaces/IOrder';
 import { IAsset, ICandleChartIntervalKeys } from 'caeb-types';
@@ -139,6 +139,11 @@ export class ProviderBinance extends ProviderCommon implements IProvider {
             httpBase: this.httpBase,
         });
     }
+
+    innerTransfer(clientOid: string, baseAsset: string, amount: number, transferType: keyof typeof TProviderTransferInnerType): Promise<string> {
+        throw new Error('Method not implemented.');
+    }
+
     attachStreamTicker(ticker: string): void {
         throw new Error('Method not implemented.');
     }
@@ -403,6 +408,11 @@ export class ProviderBinance extends ProviderCommon implements IProvider {
         }
     }
 
+    /**
+     * Attach websocket account events to emit updates.
+     *
+     * @returns {Promise<ReconnectingWebSocketHandler>} - The websocket instance
+     */
     public async attachStreamAccount(): Promise<ReconnectingWebSocketHandler> {
         const ws = await this.client.ws.user(async msg => {
             if (msg.eventType && msg.eventType === 'executionReport') {

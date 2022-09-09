@@ -1,5 +1,5 @@
 import { RestClient as ClientFtx } from 'ftx-api';
-import { IBalance, ICandle, IOrder, IProvider, TOrderSide, OrderSide } from '../../common/interfaces';
+import { IBalance, ICandle, IOrder, IProvider, TOrderSide, OrderSide, TProviderTransferInnerType } from '../../common/interfaces';
 // import { CandleChartInterval } from '../interfaces/CandleChartInterval';
 import { createLogger, Logger } from '../../../utils/logger/logger';
 import { IProviderFtx } from '../interfaces/IProviderFtx';
@@ -111,6 +111,11 @@ export class ProviderFtx extends ProviderCommon implements IProvider {
     apiPassPhrase?: string;
     subAccountId?: string | number;
     testnet?: boolean;
+
+    innerTransfer(clientOid: string, baseAsset: string, amount: number, transferType: keyof typeof TProviderTransferInnerType): Promise<string> {
+        throw new Error('Method not implemented.');
+    }
+
     attachStreamTicker(ticker: string): void {
         throw new Error('Method not implemented.');
     }
