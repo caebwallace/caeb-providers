@@ -82,11 +82,11 @@ describe('test client', () => {
             });
 
             it('provider.innerTransfer()', async () => {
-                const txId_TRADE_FUNDING = await provider.innerTransfer(`caeb-tp-${Date.now()}`, 'USDT', 1, 'TRADE_FUNDING');
-                expect(typeof txId_TRADE_FUNDING).toBe('string');
+                const txIdToFunding = await provider.innerTransfer(`caeb-tp-${Date.now()}`, 'USDT', 1, 'TRADE_FUNDING');
+                expect(typeof txIdToFunding).toBe('string');
 
-                const txId_FUNDING_TRADE = await provider.innerTransfer(`caeb-tp-${Date.now()}`, 'USDT', 1, 'FUNDING_TRADE');
-                expect(typeof txId_FUNDING_TRADE).toBe('string');
+                const txIdToTrade = await provider.innerTransfer(`caeb-tp-${Date.now()}`, 'USDT', 1, 'FUNDING_TRADE');
+                expect(typeof txIdToTrade).toBe('string');
             });
         });
         describe('orders', () => {

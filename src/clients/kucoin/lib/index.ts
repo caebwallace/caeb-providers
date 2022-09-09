@@ -582,7 +582,8 @@ export class ProviderKucoin extends ProviderCommon implements IProvider {
         await this.respectApiRatioLimits();
 
         // Set from and to account from the transferType
-        let from, to;
+        let from;
+        let to;
         if (transferType === TProviderTransferInnerType.TRADE_FUNDING) {
             from = 'trade';
             to = 'main';
