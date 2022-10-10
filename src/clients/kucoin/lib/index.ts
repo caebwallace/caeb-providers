@@ -657,7 +657,7 @@ export class ProviderKucoin extends ProviderCommon implements IProvider {
             type: data?.orderType?.toUpperCase(),
             origQty: nz(parseFloat(data?.size), 0) ?? nz(parseFloat(data?.filledSize), 0),
             executedQty: nz(parseFloat(data?.filledSize), 0),
-            createdAt: new Date(parseInt(data?.orderTime, 10) / 1000000),
+            createdAt: new Date(parseInt(data?.orderTime, 10)),
             updatedAt: new Date(parseInt(data?.ts, 10) / 1000000),
         };
 
