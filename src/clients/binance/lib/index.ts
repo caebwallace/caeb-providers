@@ -294,6 +294,10 @@ export class ProviderBinance extends ProviderCommon implements IProvider {
         return formatBalances(balances);
     }
 
+    public async getTradingBalances(): Promise<IBalance[]> {
+        throw new Error('Method not implemented.');
+    }
+
     /**
      * Get the balance of an asset.
      *

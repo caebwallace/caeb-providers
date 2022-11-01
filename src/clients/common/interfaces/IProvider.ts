@@ -30,6 +30,7 @@ export interface IProvider extends EventEmitter {
     getVolatility(candles: ICandle[]): [low: number, high: number, variation: number];
     formatSymbol(baseAsset: string, quoteAsset: string): string;
     getAccountBalances(): Promise<IBalance[]>;
+    getTradingBalances(): Promise<IBalance[]>;
     getAssetBalance(asset: string): Promise<IBalance>;
     getAllOrders(baseAsset: string, quoteAsset: string, daysRange?: number): Promise<IOrder[]>;
     getActiveOrders(baseAsset: string, quoteAsset: string, daysRange?: number): Promise<IOrder[]>;

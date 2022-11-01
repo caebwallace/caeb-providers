@@ -224,6 +224,10 @@ export class ProviderFtx extends ProviderCommon implements IProvider {
         return formatBalances(balances || []);
     }
 
+    public async getTradingBalances(): Promise<IBalance[]> {
+        throw new Error('Method not implemented.');
+    }
+
     public async getAssetBalance(asset: string): Promise<IBalance> {
         const balances = await this.getAccountBalances();
         return balances.find(a => a.asset === asset);
