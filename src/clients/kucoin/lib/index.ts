@@ -400,8 +400,8 @@ export class ProviderKucoin extends ProviderCommon implements IProvider {
     public async getTradingBalances(): Promise<IBalance[]> {
         await this.respectApiRatioLimits();
         const { data: balances } = await this.client.rest.User.Account.getAccountsList();
-        this.log.debug('getTradingBalances', balances);
-        return formatBalances(balances || []);
+        const filteredBalances = (balances || []).filter((balance: any) => balance.type === 'trade');
+        return formatBalances(filteredBalances);
     }
 
     /**

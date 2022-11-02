@@ -1,6 +1,6 @@
 {
     "name": "caeb-providers",
-    "version": "0.4.1",
+    "version": "0.4.2",
     "description": "Providers CEX/DEX by Caeb Wallace",
     "main": "dist/index.js",
     "scripts": {
