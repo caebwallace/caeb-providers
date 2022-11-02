@@ -74,6 +74,11 @@ describe('test client', () => {
                 expect(balances).toBeInstanceOf(Array);
             });
 
+            it('provider.getTradingBalances()', async () => {
+                const balances = await provider.getTradingBalances();
+                expect(balances).toBeInstanceOf(Array);
+            });
+
             it('provider.getAssetBalance()', async () => {
                 const balance = await provider.getAssetBalance(quoteAsset);
                 expect(typeof balance.asset).toBe('string');
