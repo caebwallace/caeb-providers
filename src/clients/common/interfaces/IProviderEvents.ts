@@ -7,4 +7,5 @@ export interface IProviderEvents {
     'stream:balance': (payload: any) => void;
     'stream:order': (payload: any) => void;
     'stream:ticker': (payload: any) => void;
+    'stream:close': (payload: { provider: string; reason?: number }) => void;
 }
