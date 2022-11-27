@@ -397,6 +397,12 @@ export class ProviderKucoin extends ProviderCommon implements IProvider {
         return formatBalances(balances || []);
     }
 
+    /**
+     * Get Trading balances.
+     *
+     * @returns {Promise<IBalance[]>} - Array of balances.
+     * @memberof ProviderKucoin
+     */
     public async getTradingBalances(): Promise<IBalance[]> {
         await this.respectApiRatioLimits();
         const { data: balances } = await this.client.rest.User.Account.getAccountsList();
@@ -554,6 +560,11 @@ export class ProviderKucoin extends ProviderCommon implements IProvider {
         // Catch close event
         this.datafeed.onClose(() => {
             this.log.debug('Datafeed close');
+
+            this.emit('stream:close', {
+                provider: this.id,
+                reason: 1,
+            });
         });
 
         // connect to the datafeed
